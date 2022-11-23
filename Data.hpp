@@ -18,7 +18,7 @@ public:
 
     void setMode(char mode);
     void setDist(unsigned int dist);
-    void setSensorDat(uint8_t sensorData);
+    void setSensorData(uint8_t sensorData);
     void setLineType(char type);
     void setNextMove(char move);
 private:

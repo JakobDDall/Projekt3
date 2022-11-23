@@ -1,5 +1,18 @@
 #include "LinetypeDecider.hpp"
 
+
+LinetypeDecider::LinetypeDecider(/* args */)
+{
+
+}
+
+
+LinetypeDecider::~LinetypeDecider()
+{
+
+}
+
+
 void LinetypeDecider::updateData(Data& data)
 {
     determineLinetype(data);

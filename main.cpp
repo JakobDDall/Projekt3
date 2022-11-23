@@ -20,5 +20,5 @@ int main()
 
     l.updateData(data);
 
-    std::cout << "Ny line type: " << data.getLineType() << std::endl;
+    std::cout << "New line type: " << data.getLineType() << std::endl;
 }

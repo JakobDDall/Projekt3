@@ -36,7 +36,7 @@ void Data::setDist(unsigned int dist)
     dist_ = (dist >= 0 ? dist : 0);
 }
 
-void Data::setSensorDat(uint8_t sensorData)
+void Data::setSensorData(uint8_t sensorData)
 {
     sensorData_ = sensorData;
 }
