@@ -1,3 +1,4 @@
+
 #include "Data.hpp"
 #include <iostream>
 #include "LinetypeDecider.hpp"
