@@ -11,7 +11,7 @@ std::string* Data::getDist()
     return &dist_;   
 }
 
-uint8_t* Data::getSensorData()
+std::string* Data::getSensorData()
 {
     return &sensorData_;
 }
@@ -38,7 +38,7 @@ void Data::setDist(std::string dist)
     //dist_ = (dist != "0" ? dist : "0");
 }
 
-void Data::setSensorData(uint8_t sensorData)
+void Data::setSensorData(std::string sensorData)
 {
     sensorData_ = sensorData;
 }

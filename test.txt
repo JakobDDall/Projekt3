@@ -1,0 +1,4 @@
+mode init from file
+69
+Linetype: r
+move determined!

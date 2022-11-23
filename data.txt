@@ -1,4 +1,0 @@
-mode init: 1
-dist init: 2
-linetype init: 3
-nextmove init: 4

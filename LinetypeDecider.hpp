@@ -1,16 +1,20 @@
 #pragma once
 #include "Data.hpp"
+#include <string>
+#include <iostream>
 
 class LinetypeDecider
 {
 
 public:
-    LinetypeDecider(/* args */);
+    LinetypeDecider(Data& data);
     ~LinetypeDecider();
 
 
-    void updateData(Data& data);
+    void updateData();
 
 private:
-    void determineLinetype(Data& data);
+    std::string* sensorDataPointer_;
+    std::string* linetypePointer_;
+    void determineLinetype();
 };
