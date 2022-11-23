@@ -12,5 +12,5 @@ public:
     void updateData(Data& data);
 
 private:
-    void determineLinetype();
+    void determineLinetype(Data& data);
 };
