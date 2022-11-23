@@ -42,6 +42,8 @@
         "xstddef": "cpp",
         "xstring": "cpp",
         "xtr1common": "cpp",
-        "fstream": "cpp"
+        "string": "cpp",
+        "fstream": "cpp",
+        "list": "cpp"
     }
 }

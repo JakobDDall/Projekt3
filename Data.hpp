@@ -1,5 +1,6 @@
 #pragma once
 #include <stdint.h>
+#include <string>
 
 // LineBot v 1.0
 // Data-class
@@ -10,23 +11,23 @@
 class Data
 {
 public:
-    char getMode();
-    unsigned int getDist();
-    uint8_t getSensorData();
-    char getLineType();
-    char getNextMove();
+    std::string* getMode();
+    std::string* getDist();
+    uint8_t* getSensorData();
+    std::string* getLineType();
+    std::string* getNextMove();
 
-    void setMode(char mode);
-    void setDist(unsigned int dist);
-    void setSensorData(uint8_t sensorData);
-    void setLineType(char type);
-    void setNextMove(char move);
+    void setMode(std::string mode);
+    void setDist(std::string dist);
+    void setSensorDat(uint8_t sensorData);
+    void setLineType(std::string type);
+    void setNextMove(std::string move);
 private:
-    char mode_;
-    unsigned int dist_;
+    std::string mode_;
+    std::string dist_;
     uint8_t sensorData_;
-    char lineType_;
-    char nextMove_;
+    std::string lineType_;
+    std::string nextMove_;
     const int N_OF_SENSORS = 8;
 
 };

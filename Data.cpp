@@ -1,39 +1,41 @@
 #include "Data.hpp"
 
 
-char Data::getMode()
+std::string* Data::getMode()
 {
-    return mode_;
+    return &mode_;
 }
 
-unsigned int Data::getDist()
+std::string* Data::getDist()
 {
-    return dist_;   
+    return &dist_;   
 }
 
-uint8_t Data::getSensorData()
+uint8_t* Data::getSensorData()
 {
-    return sensorData_;
+    return &sensorData_;
 }
 
-char Data::getLineType()
+std::string* Data::getLineType()
 {
-    return lineType_;
+    return &lineType_;
 }
 
-char Data::getNextMove()
+std::string* Data::getNextMove()
 {
-    return nextMove_;
+    return &nextMove_;
 }
 
-void Data::setMode(char mode)
+void Data::setMode(std::string mode)
 {
-    mode_ = (mode == 's' | mode == 'n' | mode == 'a') ? mode : 'n';
+    mode_ = mode;
+    //mode_ = (mode == "r" | mode == "n" | mode == "") ? mode : "n";
 }
 
-void Data::setDist(unsigned int dist)
+void Data::setDist(std::string dist)
 {
-    dist_ = (dist >= 0 ? dist : 0);
+    dist_ = dist;
+    //dist_ = (dist != "0" ? dist : "0");
 }
 
 void Data::setSensorData(uint8_t sensorData)
@@ -41,13 +43,15 @@ void Data::setSensorData(uint8_t sensorData)
     sensorData_ = sensorData;
 }
 
-void Data::setLineType(char type)
+void Data::setLineType(std::string type)
 {
-    lineType_ = (type == 'r' | type == 'd' | type == 'l') ? type : 'l';
+    lineType_ = type;
+    //lineType_ = (type == "r" | type == "d" | type == "l") ? type : "l";
 }
 
-void Data::setNextMove(char move)
+void Data::setNextMove(std::string move)
 {
-    nextMove_ = (move == 'l' | move == 'r' | move == 'd') ? move : 'd';
+    nextMove_ = move;
+    //nextMove_ = (move == "l" | move == "r" | move == "d") ? move : "d";
 }
 
