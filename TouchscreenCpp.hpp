@@ -10,7 +10,7 @@ class TouchscreenCpp
 private:
     std::fstream dataFile_;
     std::string fileName_;
-    std::list<std::string*> lineList;
+    std::list<std::string*> dataRefs_;
 public:
     TouchscreenCpp(std::string fileName, Data& data); //Lav filer. Gem lokationer.
     ~TouchscreenCpp(); //Slet filer

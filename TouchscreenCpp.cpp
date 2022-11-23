@@ -10,11 +10,11 @@ TouchscreenCpp::TouchscreenCpp(std::string fileName, Data& data)
     dataFile_ << "mode init: 1\ndist init: 2\nlinetype init: 3\nnextmove init: 4\n";
     dataFile_.close();
 
-    
-    lineList.push_back(data.getMode());
-    lineList.push_back(data.getDist());
-    lineList.push_back(data.getLineType());
-    lineList.push_back(data.getNextMove());
+    //Læg passende data medlemmer ind i liste. Stemmer overens med rækkefølgen af den tilhørende txt fil
+    dataRefs_.push_back(data.getMode()); //L1: User input - mode select
+    dataRefs_.push_back(data.getDist()); //L2: Distance moved
+    dataRefs_.push_back(data.getLineType()); //L3: Linetype
+    dataRefs_.push_back(data.getNextMove()); //L4: NextMove
 }
 
 TouchscreenCpp::~TouchscreenCpp()
@@ -28,7 +28,7 @@ void TouchscreenCpp::updateData()
     dataFile_.seekg (0, std::ios::beg); //Ryk filepointer til start
     std::string temp; //temp variabel til at gemme streng
 
-    for (auto i : lineList) //Loop gennem de 4 tilknyttede elementer i data klassen.
+    for (auto i : dataRefs_) //Loop gennem de 4 tilknyttede elementer i data klassen.
     {
         std::getline(dataFile_, temp); //Gem linjens tekst i temp strengen
         *i = temp; //Skriv linjen til data klassens tilsvarende element
@@ -41,7 +41,7 @@ void TouchscreenCpp::updateScreen()
 {
     dataFile_.open(fileName_, std::fstream::out | std::fstream::trunc); //Åbn og clear fil
     dataFile_.seekg (0, std::ios::beg); //Ryk filepointer til start
-    for (auto i : lineList) //Loop gennem de 4 tilknyttede elementer i data klassen.
+    for (auto i : dataRefs_) //Loop gennem de 4 tilknyttede elementer i data klassen.
     {   
         dataFile_ << *i << std::endl;
     }
