@@ -1,0 +1,24 @@
+#include "Data.hpp"
+#include <iostream>
+#include "LinetypeDecider.hpp"
+
+int main()
+{
+    LinetypeDecider l;
+    Data data;
+    data.setDist(500);
+    data.setLineType('l');
+    data.setMode('a');
+    data.setNextMove('r');
+    data.setSensorDat(0b00000101);
+
+    std::cout << "Dist: " << data.getDist() << std::endl;
+    std::cout << "Line type: " << data.getLineType() << std::endl;
+    std::cout << "Mode: " << data.getMode() << std::endl;
+    std::cout << "Move: " << data.getNextMove() << std::endl;
+    std::cout << "Sensordata: " << data.getSensorData() << std::endl;
+
+    l.updateData(data);
+
+    std::cout << "Ny line type: " << data.getLineType() << std::endl;
+}
