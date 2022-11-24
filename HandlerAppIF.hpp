@@ -13,7 +13,7 @@ public:
     void sendCmd();
 
 private:
-    //SpiDevice spiDevice_;
+    SpiDevice spiDevice_;
     std::string* distPointer_;
     std::string* sensorDataPointer_;
     std::string* nextMovePointer_;

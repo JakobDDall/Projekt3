@@ -27,6 +27,7 @@ void Navigation::startMainLoop()
 {
     printAllData();
     touchscreen_->updateData(); //Skal ske først! læser brugerinput. Overskriver desuden data... :-)
+    // IF USERINPUT er stop, så sendcmd(STOP)
     handlerAppIF_->updateData(); //Hent ny data fra PSoC
     lineDecider_->updateData(); //del 1 af: Behandl data fra PSoC
     determineNextMove();        //del 2 af: Behandl data fra PSoC
@@ -41,15 +42,15 @@ void Navigation::determineNextMove() //TODO Opdater så den passer på alle linj
     std::string lineType = *data_.getLineType();
     if(lineType == "r")
     {
-        data_.setNextMove("r");
+        data_.setNextMove("Right");
     }
     else if(lineType == "d")
     {
-        data_.setNextMove("d");
+        data_.setNextMove("Straight");
     }
     else if(lineType == "l")
     {
-        data_.setNextMove("l");
+        data_.setNextMove("Left");
     }
     else
     {
