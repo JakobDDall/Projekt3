@@ -4,7 +4,7 @@ Navigation::Navigation(/* args */)
 {
     handlerAppIF_ = new HandlerAppIF(data_);
     lineDecider_ = new LinetypeDecider(data_);
-    touchscreen_ = new TouchscreenCpp("test.txt", data_);
+    touchscreen_ = new TouchscreenCpp("Screen.txt", data_);
 
 
         std::cout << "-------------------- Setting initialdata entries ----------" << std::endl;
