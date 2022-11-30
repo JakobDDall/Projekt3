@@ -15,6 +15,7 @@ public:
     std::string* getDist();
     std::string* getSensorData();
     std::string* getLineType();
+    std::string* getCurrentMove();
     std::string* getNextMove();
 
     void setMode(std::string mode);
@@ -27,6 +28,7 @@ private:
     std::string dist_;
     std::string sensorData_;
     std::string lineType_;
+    std::string currentMove_;
     std::string nextMove_;
     const int N_OF_SENSORS = 8;
 
