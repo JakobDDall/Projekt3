@@ -62,20 +62,5 @@ void LinetypeDecider::determineLinetype() //Skal opdateres så den detekterer al
     {
         *linetypePointer_ = TYPE_UNKNOWN;
     }
-
-
-    // switch (*currentMovePointer_)
-    // {
-    // case TYPE_STRAIGHT:
-    //     straightMoveSwitch();
-    //     break;
-    // case TYPE_LEFT:
-    //     rightMoveSwitch();
-    //     break;
-    
-    // default:
-    //     break;
-    // }
-
    
 }
