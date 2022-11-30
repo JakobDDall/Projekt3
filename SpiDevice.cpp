@@ -26,9 +26,7 @@ uint8_t SpiDevice::requestData(uint8_t request)
     memset(tx_buffer_,0,sizeof(tx_buffer_));
     memset(rx_buffer_,0,sizeof(rx_buffer_)); 
     memcpy(tx_buffer_, &request, sizeof(request));   
-    printf("sending %X request, to spidev in full duplex \n ",tx_buffer_[0]);
     mySpi_->xfer(tx_buffer_,sizeof(tx_buffer_),rx_buffer_,sizeof(rx_buffer_));
-    printf("Dist er: %i\n",rx_buffer_[0]);
     return rx_buffer_[0];
 }
 

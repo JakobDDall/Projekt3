@@ -5,6 +5,7 @@ HandlerAppIF::HandlerAppIF(Data& data)
     distPointer_ = data.getDist();
     sensorDataPointer_ = data.getSensorData();
     nextMovePointer_ = data.getNextMove();
+    chosenMode_ = data.getMode();
 }
 
 
@@ -28,6 +29,8 @@ void HandlerAppIF::sendCmd()
 {
     uint8_t cmd;
 
+if (*chosenMode_ == "Simple" || *chosenMode_ == "Advanced")
+{
     if (*nextMovePointer_ == "Right")
     {
         cmd = 0x11;
@@ -44,17 +47,21 @@ void HandlerAppIF::sendCmd()
     {
         cmd = 0x14;
     }
-    else if(*nextMovePointer_ == "Stop")
-    {
-        cmd = 0x15;
-    }
     
     spiDevice_.sendData(cmd);
+}
+else if(*chosenMode_ == "STOP")
+{
+    cmd = 0x15;
+    spiDevice_.sendData(cmd);
+}   
 }
 
 uint8_t HandlerAppIF::spiDummy()
 {
     return 69;
 }
+
+
 
 

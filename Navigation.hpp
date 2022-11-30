@@ -12,9 +12,13 @@ public:
     ~Navigation();
     void startMainLoop();
     void determineNextMove();
+    
 
 private:
     void printAllData();
+    void rightTurn();
+    void leftTurn();
+    void uTurn();
     Data data_;
     HandlerAppIF* handlerAppIF_;
     LinetypeDecider* lineDecider_;

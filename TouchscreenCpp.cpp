@@ -9,7 +9,7 @@ TouchscreenCpp::TouchscreenCpp(std::string fileName, Data& data)
     dataFile_.open(fileName_, std::fstream::out | std::fstream::trunc);
     dataFile_ << "mode init from file\ndist init from file\nlinetype init from file\nnextmove init from file\n";
     dataFile_.close();
-
+    
     //Læg passende data medlemmer ind i liste. Stemmer overens med rækkefølgen af den tilhørende txt fil
     dataRefs_.push_back(data.getMode()); //L1: User input - mode select
     dataRefs_.push_back(data.getDist()); //L2: Distance moved
