@@ -1,11 +1,5 @@
 #include "LinetypeDecider.hpp"
-#include "lineTypeNames.hpp"
-
-#define LEFT 0b00010000
-#define FRONTLEFT 0b00001000
-#define FRONT 0b00000100
-#define FRONTRIGHT 0b00000010
-#define RIGHT 0b00000001
+#include "defines.hpp"
 
 LinetypeDecider::LinetypeDecider(Data& data)
 {
@@ -28,7 +22,6 @@ void LinetypeDecider::updateData()
 
 void LinetypeDecider::determineLinetype() //Skal opdateres så den detekterer alle linjetyper
 {
-    uint8_t sensorData = std::stoi(*sensorDataPointer_);
     //uint 8 indeholdersensordata. Hver bit repræsenterer status af en sensor
     //0bxxx12345
     //1 er venstre sensor

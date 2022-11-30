@@ -1,7 +1,0 @@
-#define TYPE_STRAIGHT "Straight"
-#define TYPE_RIGHT "Right"
-#define TYPE_LEFT "Left"
-#define TYPE_TJUNCTION "T-junction"
-#define TYPE_UTURN "U-turn"
-#define TYPE_4WAY "4-way"
-#define TYPE_UNKNOWN "Unknown"

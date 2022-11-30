@@ -5,12 +5,16 @@ HandlerAppIF::HandlerAppIF(Data& data)
     distPointer_ = data.getDist();
     sensorDataPointer_ = data.getSensorData();
     nextMovePointer_ = data.getNextMove();
-    chosenMode_ = data.getMode();
+    modePointer_ = data.getMode();
+
+
+    lastMove_ = new std::string;
 }
 
 
 HandlerAppIF::~HandlerAppIF()
 {
+    delete lastMove_;
 }
 
 
@@ -29,32 +33,39 @@ void HandlerAppIF::sendCmd()
 {
     uint8_t cmd;
 
-if (*chosenMode_ == "Simple" || *chosenMode_ == "Advanced")
-{
-    if (*nextMovePointer_ == "Right")
+    if (*lastMove_ == *nextMovePointer_) //Hvis der ikke er sket ændringer i ønsket move, er der ingen grund til at sende besked
     {
-        cmd = 0x11;
-    }
-    else if(*nextMovePointer_ == "Left")
-    {
-        cmd = 0x12;
-    }
-    else if(*nextMovePointer_ == "Straight")
-    {
-        cmd = 0x13;
-    }
-    else if(*nextMovePointer_ == "Uturn")
-    {
-        cmd = 0x14;
+        return;
     }
     
-    spiDevice_.sendData(cmd);
-}
-else if(*chosenMode_ == "STOP")
-{
-    cmd = 0x15;
-    spiDevice_.sendData(cmd);
-}   
+
+    if (*modePointer_ == "Simple" || *modePointer_ == "Advanced")
+    {
+        if (*nextMovePointer_ == "Right")
+        {
+            cmd = 0x11;
+        }
+        else if(*nextMovePointer_ == "Left")
+        {
+            cmd = 0x12;
+        }
+        else if(*nextMovePointer_ == "Straight")
+        {
+            cmd = 0x13;
+        }
+        else if(*nextMovePointer_ == "Uturn")
+        {
+            cmd = 0x14;
+        }
+    }
+    else if(*modePointer_ == "STOP")
+    {
+        cmd = 0x15;    
+    }   
+
+
+    spiDevice_.sendData(cmd); //Send beskeden
+    *lastMove_ = *nextMovePointer_; //Opdater lastmove
 }
 
 uint8_t HandlerAppIF::spiDummy()

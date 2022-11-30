@@ -16,6 +16,7 @@ public:
 
 private:
     void printAllData();
+    void determineSimple();
     void rightTurn();
     void leftTurn();
     void uTurn();
