@@ -21,12 +21,6 @@ std::string* Data::getLineType()
     return &lineType_;
 }
 
-std::string* Data::getCurrentMove()
-{
-    return &currentMove_;
-}
-
-
 std::string* Data::getNextMove()
 {
     return &nextMove_;

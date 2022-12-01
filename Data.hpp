@@ -15,7 +15,6 @@ public:
     std::string* getDist();
     std::string* getSensorData();
     std::string* getLineType();
-    std::string* getCurrentMove();
     std::string* getNextMove();
 
     void setMode(std::string mode);
@@ -23,6 +22,13 @@ public:
     void setSensorData(std::string sensorData);
     void setLineType(std::string type);
     void setNextMove(std::string move);
+
+    //Kan gøres:
+    //Implementer sensordata som gennemsnit af sidste x elementer.
+    //Indsæt modtaget data i circular list
+    //Beregn gennemsnit af listens medlemmer
+    //Afrund til nærmeste heltal
+    //Indsæt som værdien i sensorData_
 private:
     std::string mode_;
     std::string dist_;

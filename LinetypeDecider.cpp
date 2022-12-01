@@ -5,7 +5,6 @@ LinetypeDecider::LinetypeDecider(Data& data)
 {
     sensorDataPointer_ = data.getSensorData();
     linetypePointer_ = data.getLineType();
-    currentMovePointer_ = data.getCurrentMove();
 }
 
 
@@ -20,7 +19,7 @@ void LinetypeDecider::updateData()
     determineLinetype();
 }
 
-void LinetypeDecider::determineLinetype() //Skal opdateres så den detekterer alle linjetyper
+void LinetypeDecider::determineLinetype() 
 {
     //uint 8 indeholdersensordata. Hver bit repræsenterer status af en sensor
     //0bxxx12345
@@ -29,6 +28,10 @@ void LinetypeDecider::determineLinetype() //Skal opdateres så den detekterer al
     //3 er center front
     //4 er højre front
     //5 er højre sensor
+
+
+    //Logikken her kigger på bits i sensordata, og giver et (temmelig dårligt) gæt på hvilken linje vi er på
+    //Kan forbedres meget
     uint8_t sensorData = std::stoi(*sensorDataPointer_);
 
     if(!(sensorData & FRONT) && (sensorData & LEFT) && (sensorData & RIGHT)) 

@@ -8,7 +8,6 @@ Navigation::Navigation(/* args */)
     lineDecider_ = new LinetypeDecider(data_);
     touchscreen_ = new TouchscreenCpp("Screen.txt", data_);
 
-
         std::cout << "-------------------- Setting initialdata entries ----------" << std::endl;
         data_.setDist("testDist");
         data_.setLineType("testType");
@@ -44,7 +43,18 @@ void Navigation::startMainLoop()
     
 
 }
+//Logik til beslutningstagen er som følger:
+//Move bestemmes:
+    //Navigation -> determineNextMove() forholder sig til hvilken mode der er valg, og kalder passende funktion
+    //Denne funktion ser på hvad linebot netop nu er i gang med, og bestemmer næste move herudfra. 
+    //Eksempelvis: Kører vi ligeud analyserer vi linjetype, er vi ved at dreje, ser vi blot på en enkelt sensor
 
+    //Efter ovenstående har kørt, skulle robotten meget gerne have skrevet et move ind i nextMove variablen i data klassen.
+
+//Move sendes
+    //HandlerAppIF holder i hvert gennemløb af main-loop øje med om der er sket ændringer i robottens næste move. 
+    //Hvis det er tilfældet, sendes ny kommando til PSoC.
+    
 
 void Navigation::determineNextMove()
 {   
@@ -124,11 +134,7 @@ void Navigation::determineSimple()
             *data_.getNextMove() == TYPE_STOP; //Når vi igen kan se linjen stopper vi
         }
     }
-    
-    //Hvis vi er ved at 
-    
 }
-
 
 void Navigation::rightTurn()
 {
