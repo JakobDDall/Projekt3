@@ -21,7 +21,7 @@ HandlerAppIF::~HandlerAppIF()
 
 void HandlerAppIF::updateData()
 {
-    int tmp = std::stoi(*distPointer_);
+    int tmp = std::stoi(*(distPointer_));
     tmp += spiDevice_.requestData(distRequest_);
     *distPointer_ = std::to_string(tmp);
     *sensorDataPointer_ = std::to_string(spiDevice_.requestData(sensorRequest_));
@@ -57,6 +57,10 @@ void HandlerAppIF::sendCmd()
         else if(*nextMovePointer_ == "Uturn")
         {
             cmd = 0x14;
+        }
+        else if(*nextMovePointer_ == "Stop")
+        {
+            cmd = 0x15;
         }
     }
     else if(*modePointer_ == "STOP")
