@@ -3,8 +3,8 @@
 
 LinetypeDecider::LinetypeDecider(Data& data)
 {
-    sensorDataPointer_ = data.getSensorData();
-    linetypePointer_ = data.getLineType();
+    sensorDataPointer_ = data.getSensorDataP();
+    linetypePointer_ = data.getLineTypeP();
 }
 
 
@@ -34,6 +34,10 @@ void LinetypeDecider::determineLinetype()
     //Kan forbedres meget
     uint8_t sensorData = std::stoi(*sensorDataPointer_);
 
+
+    *linetypePointer_ = TYPE_UNKNOWN;
+    return;
+    
     if(!(sensorData & FRONT) && (sensorData & LEFT) && (sensorData & RIGHT)) 
     {
         *linetypePointer_ = TYPE_TJUNCTION;

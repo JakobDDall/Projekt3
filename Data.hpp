@@ -11,17 +11,19 @@
 class Data
 {
 public:
-    std::string* getMode();
-    std::string* getDist();
-    std::string* getSensorData();
-    std::string* getLineType();
-    std::string* getNextMove();
+    std::string* getModeP();
+    std::string* getDistP();
+    std::string* getSensorDataP();
+    std::string* getLineTypeP();
+    std::string* getNextMoveP();
 
     void setMode(std::string mode);
     void setDist(std::string dist);
     void setSensorData(std::string sensorData);
     void setLineType(std::string type);
     void setNextMove(std::string move);
+
+    void addSensorData(std::string data);
 
     //Kan gøres:
     //Implementer sensordata som gennemsnit af sidste x elementer.
@@ -34,7 +36,6 @@ private:
     std::string dist_;
     std::string sensorData_;
     std::string lineType_;
-    std::string currentMove_;
     std::string nextMove_;
     const int N_OF_SENSORS = 8;
 

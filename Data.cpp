@@ -1,27 +1,27 @@
 #include "Data.hpp"
 
 
-std::string* Data::getMode()
+std::string* Data::getModeP()
 {
     return &mode_;
 }
 
-std::string* Data::getDist()
+std::string* Data::getDistP()
 {
     return &dist_;   
 }
 
-std::string* Data::getSensorData()
+std::string* Data::getSensorDataP()
 {
     return &sensorData_;
 }
 
-std::string* Data::getLineType()
+std::string* Data::getLineTypeP()
 {
     return &lineType_;
 }
 
-std::string* Data::getNextMove()
+std::string* Data::getNextMoveP()
 {
     return &nextMove_;
 }

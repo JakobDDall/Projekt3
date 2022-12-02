@@ -11,10 +11,10 @@ TouchscreenCpp::TouchscreenCpp(std::string fileName, Data& data)
     dataFile_.close();
     
     //Læg passende data medlemmer ind i liste. Stemmer overens med rækkefølgen af den tilhørende txt fil
-    dataRefs_.push_back(data.getMode()); //L1: User input - mode select
-    dataRefs_.push_back(data.getDist()); //L2: Distance moved
-    dataRefs_.push_back(data.getLineType()); //L3: Linetype
-    dataRefs_.push_back(data.getNextMove()); //L4: NextMove
+    dataRefs_.push_back(data.getModeP()); //L1: User input - mode select
+    dataRefs_.push_back(data.getDistP()); //L2: Distance moved
+    dataRefs_.push_back(data.getLineTypeP()); //L3: Linetype
+    dataRefs_.push_back(data.getNextMoveP()); //L4: NextMove
 }
 
 TouchscreenCpp::~TouchscreenCpp()
