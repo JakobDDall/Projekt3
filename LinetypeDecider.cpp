@@ -22,41 +22,28 @@ void LinetypeDecider::updateData()
 void LinetypeDecider::determineLinetype() 
 {
     //uint 8 indeholdersensordata. Hver bit repræsenterer status af en sensor
-    //0bxxx12345
-    //1 er venstre sensor
-    //2 er vesntre front
-    //3 er center front
-    //4 er højre front
-    //5 er højre sensor
+    //0bxx123456
+    //1 er LEFT
+    //2 er FRONTLEFT
+    //3 er FRONT
+    //4 er FRONTRIGHT
+    //5 er RIGHT
+    //6 er BACK
 
 
     //Logikken her kigger på bits i sensordata, og giver et (temmelig dårligt) gæt på hvilken linje vi er på
     //Kan forbedres meget
     uint8_t sensorData = std::stoi(*sensorDataPointer_);
+    sensorData &= 0b00111111; //Clear first 2 bits, leave the rest
 
-
-    *linetypePointer_ = TYPE_UNKNOWN;
-    return;
     
-    if(!(sensorData & FRONT) && (sensorData & LEFT) && (sensorData & RIGHT)) 
-    {
-        *linetypePointer_ = TYPE_TJUNCTION;
-    }
-    else if((sensorData & FRONT) && (sensorData & LEFT) && (sensorData & RIGHT)) 
-    {
-        *linetypePointer_ = TYPE_4WAY;
-    }
-    else if((sensorData & LEFT) && !(sensorData & RIGHT)) 
-    {
-        *linetypePointer_ = TYPE_LEFT;
-    }
-    else if((sensorData & RIGHT) && !(sensorData & LEFT)) 
-    {
-        *linetypePointer_ = TYPE_RIGHT;
-    }
-    else if((sensorData & FRONT) && !(sensorData & LEFT) && !(sensorData & RIGHT)) 
+    if((sensorData & FRONT) && !(sensorData & FRONTLEFT) && !(sensorData & FRONTRIGHT)) 
     {
         *linetypePointer_ = TYPE_STRAIGHT;
+    }
+    else if((sensorData & FRONT) && (sensorData & FRONTLEFT) && (sensorData & FRONTRIGHT)) 
+    {
+        *linetypePointer_ = TYPE_TJUNCTION;
     }
     else
     {

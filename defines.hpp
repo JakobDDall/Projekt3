@@ -11,8 +11,9 @@
 
 
 //------------------ Sensors --------------
-#define LEFT 0b00010000
-#define FRONTLEFT 0b00001000
-#define FRONT 0b00000100
-#define FRONTRIGHT 0b00000010
-#define RIGHT 0b00000001
+#define LEFT 0b00100000
+#define FRONTLEFT 0b00010000
+#define FRONT 0b00001000
+#define FRONTRIGHT 0b00000100
+#define RIGHT 0b00000010
+#define BACK 0b00000001

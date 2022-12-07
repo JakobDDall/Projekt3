@@ -1,4 +1,4 @@
-Simple
-36858
+mode init from file
+0
 Unknown
-Stop
+nextmove init from file
