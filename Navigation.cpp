@@ -95,28 +95,31 @@ void Navigation::determineSimple()
     uint8_t sensorData = std::stoi(*data_.getSensorDataP());
 
 
-    if (nextMove == TYPE_STRAIGHT || nextMove == TYPE_STOP) //Hvis vi kører ligeud, eller er standset skal vi blot holde øje med linjetypen.
+
+    if(nextMove == TYPE_STRAIGHT)
     {
-        if ((linetype == TYPE_TJUNCTION))
-        {
-            *data_.getNextMoveP() = TYPE_RIGHT;
-        }
-        else if ((linetype == TYPE_STRAIGHT))
-        {
-            *data_.getNextMoveP() = TYPE_STRAIGHT;
-        }
-        else if ((linetype == TYPE_UNKNOWN))
-        {
-            *data_.getNextMoveP() = "Dillermand";
-        }
+        
+
+        if(!(sensorData & SENSOR_FRONT) && (sensorData & SENSOR_FRONTRIGHT))
+            {
+                *data_.getNextMoveP() = MOV_ADJ_RIGHT;
+            }
+        else if(!(sensorData & SENSOR_FRONT) && (sensorData & SENSOR_FRONTLEFT))
+            {
+                *data_.getNextMoveP() = MOV_ADJ_LEFT;
+            }
     }
-    else if (nextMove == TYPE_RIGHT) //Hvis vi drejer til højre, skal vi vente til vi igen kan se en linje med højre sensor
+    if (nextMove == TYPE_STOP) //Hvis vi er standset
     {
-        if (sensorData & FRONT)
-        {
-            *data_.getNextMoveP() = TYPE_STOP; //Når vi igen kan se linjen stopper vi
-        }
+       //Styr efter linjetype
     }
+    // else if (nextMove == TYPE_RIGHT) //Hvis vi drejer til højre, skal vi vente til vi igen kan se en linje med front
+    // {
+    //     if (sensorData & FRONT)
+    //     {
+    //         *data_.getNextMoveP() = TYPE_STOP; //Når vi igen kan se linjen stopper vi
+    //     }
+    // }
 }
 
 void Navigation::rightTurn()

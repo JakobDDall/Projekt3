@@ -90,21 +90,19 @@ class TouchscreenPy:
         ###### Visualisering af knapper og text: ######################
         self.app = App('Hovedmenu for LineBot', height = 480, width = 800)
 
-        intro = Text(self.app, text="Velkommen til hovedmenu for LineBot", align ="top")
-
         modes = Text(self.app, text= "Vælg en mode for LineBot", align = "top")
         Mode_box = Box(self.app, align="top", width="fill")
 
 
-        self.simpleButton = PushButton(Mode_box, self.toggleSimple, text="Kør simpel labyrint", align="left",width = "fill", height = 3, enabled = True)
+        self.simpleButton = PushButton(Mode_box, self.toggleSimple, text="Kør simpel labyrint", align="left",width = "fill", height = 2, enabled = True)
         self.simpleButton.text_size = 15
 
 
-        self.advancedButton = PushButton(Mode_box, self.toggleAdvanced, text="Kør avanceret labyrint", align="right",width = "fill", height = 3, enabled = True)
+        self.advancedButton = PushButton(Mode_box, self.toggleAdvanced, text="Kør avanceret labyrint", align="right",width = "fill", height = 2, enabled = True)
         self.advancedButton.text_size = 15
 
 
-        self.valgtMode = Text(self.app, text ="Ingen funktion er valgt", align="top", width = "fill", height = 3 )
+        self.valgtMode = Text(self.app, text ="Ingen funktion er valgt", align="top", width = "fill", height = 2 )
 
         Text(self.app, text="Aflagte distance:", align ="top")
         self.distance = Text(self.app, text= "0")
@@ -112,7 +110,7 @@ class TouchscreenPy:
         
         Text(self.app, text="Nuværende linjetype:", align ="top")
         self.linje = Text(self.app, text="Ingen linjetype")
-        self.linje.repeat(1000, self.main)  # Laver callback hvert 500ms
+        self.linje.repeat(1000, self.main)  # Laver callback hvert 1000ms
         
         Text(self.app, text="Næste move:", align ="top")
         self.move = Text(self.app, text="Ingen")

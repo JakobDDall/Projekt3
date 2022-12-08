@@ -37,13 +37,9 @@ void LinetypeDecider::determineLinetype()
     sensorData &= 0b00111111; //Clear first 2 bits, leave the rest
 
     
-    if((sensorData & FRONT) && !(sensorData & FRONTLEFT) && !(sensorData & FRONTRIGHT)) 
+    if((sensorData & SENSOR_FRONT) && !(sensorData & SENSOR_FRONTLEFT) && !(sensorData & SENSOR_FRONTRIGHT)) 
     {
         *linetypePointer_ = TYPE_STRAIGHT;
-    }
-    else if((sensorData & BACK) && (sensorData & LEFT) && (sensorData & RIGHT)) 
-    {
-        *linetypePointer_ = TYPE_TJUNCTION;
     }
     else
     {

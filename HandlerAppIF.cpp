@@ -39,39 +39,41 @@ void HandlerAppIF::sendCmd()
 {
     uint8_t cmd;
 
-    // if (*lastMove_ == *nextMovePointer_) //Hvis der ikke er sket ændringer i ønsket move, er der ingen grund til at sende besked
-    // {
-    //     printf("Move did not change from last loop \n");
-    //     return;
-    // }
-    
-
+    if (*lastMove_ == *nextMovePointer_) //Hvis der ikke er sket ændringer i ønsket move, er der ingen grund til at sende besked
+    {
+        printf("Move did not change from last loop \n");
+        return;
+    }
     if (*modePointer_ == "Simple" || *modePointer_ == "Advanced")
     {
-        if (*nextMovePointer_ == TYPE_RIGHT)
+        if (*nextMovePointer_ == MOV_LEFT)
         {
-            cmd = 0x11;
+            cmd = CMD_LEFTTURN;
         }
-        else if(*nextMovePointer_ == TYPE_LEFT)
+        else if(*nextMovePointer_ == MOV_RIGHT)
         {
-            cmd = 0x12;
+            cmd = CMD_RIGHTTURN;
         }
-        else if(*nextMovePointer_ == TYPE_STRAIGHT)
+        else if(*nextMovePointer_ == MOV_STRAIGHT)
         {
-            cmd = 0x13;
+            cmd = CMD_STRAIGHT;
         }
-        else if(*nextMovePointer_ == TYPE_UTURN)
+        else if(*nextMovePointer_ == MOV_STOP)
         {
-            cmd = 0x14;
+            cmd = CMD_STOP;
         }
-        else if(*nextMovePointer_ == TYPE_STOP)
+        else if(*nextMovePointer_ == MOV_ADJ_LEFT)
         {
-            cmd = 0x15;
+            cmd = CMD_ADJ_LEFT;
+        }
+        else if(*nextMovePointer_ == MOV_ADJ_RIGHT)
+        {
+            cmd = CMD_ADJ_RIGHT;
         }
     }
     else if(*modePointer_ == "STOP")
     {
-        cmd = 0x15;    
+        cmd = CMD_STOP;    
     }   
 
 
