@@ -7,7 +7,7 @@ TouchscreenCpp::TouchscreenCpp(std::string fileName, Data& data)
     fileName_ = fileName;
     //
     dataFile_.open(fileName_, std::fstream::out | std::fstream::trunc);
-    dataFile_ << "mode init from file\n0\nlinetype init from file\nnextmove init from file\n";
+    dataFile_ << "55\n55\n55\n55\n";
     dataFile_.close();
     
     //Læg passende data medlemmer ind i liste. Stemmer overens med rækkefølgen af den tilhørende txt fil
@@ -28,11 +28,8 @@ void TouchscreenCpp::updateData()
     dataFile_.seekg (0, std::ios::beg); //Ryk filepointer til start
     std::string temp; //temp variabel til at gemme streng
 
-    for (auto i : dataRefs_) //Loop gennem de 4 tilknyttede elementer i data klassen.
-    {
         std::getline(dataFile_, temp); //Gem linjens tekst i temp strengen
-        *i = temp; //Skriv linjen til data klassens tilsvarende element
-    }
+        *dataRefs_.front() = temp; //Skriv linjen til data klassens tilsvarende element
     dataFile_.close();
 }
 

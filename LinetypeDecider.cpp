@@ -36,14 +36,30 @@ void LinetypeDecider::determineLinetype()
     uint8_t sensorData = std::stoi(*sensorDataPointer_);
     sensorData &= 0b00111111; //Clear first 2 bits, leave the rest
 
-    
-    if((sensorData & SENSOR_FRONT) && !(sensorData & SENSOR_FRONTLEFT) && !(sensorData & SENSOR_FRONTRIGHT)) 
+    switch(sensorData)
     {
-        *linetypePointer_ = TYPE_STRAIGHT;
-    }
-    else
-    {
-        *linetypePointer_ = TYPE_UNKNOWN;
+        case 0b00100011: //Tre bagerste
+            *linetypePointer_ = TYPE_TJUNCTION; 
+            break;
+
+        case 0b00100001: //Bagerst midt og vesntre
+            *linetypePointer_ = TYPE_LEFT; 
+            break;
+
+        case 0b00000011: //Bagerst midt og højre
+            *linetypePointer_ = TYPE_RIGHT; 
+            break;
+        
+        case 0b00001000: //Kun forreste
+            *linetypePointer_ = TYPE_STRAIGHT; 
+            break;
+        case 0b00001001: //Bagerst og forrest
+            *linetypePointer_ = TYPE_STRAIGHT; 
+            break;
+
+        default:
+            *linetypePointer_ = TYPE_UNKNOWN;
+            break;
     }
    
 }

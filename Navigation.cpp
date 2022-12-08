@@ -9,11 +9,11 @@ Navigation::Navigation(/* args */)
     touchscreen_ = new TouchscreenCpp("Screen.txt", data_);
 
         std::cout << "-------------------- Setting initialdata entries ----------" << std::endl;
-        data_.setDist("testDist");
-        data_.setLineType("testType");
-        data_.setMode("testMode");
-        data_.setNextMove("testMove");
-        data_.setSensorData("testData");
+        data_.setDist("55");
+        data_.setLineType("55");
+        data_.setMode("55");
+        data_.setNextMove("55");
+        data_.setSensorData("55");
 }
 
 Navigation::~Navigation()
@@ -38,7 +38,7 @@ void Navigation::startMainLoop()
         touchscreen_->updateScreen();
         handlerAppIF_->sendCmd();
         printAllData();
-        usleep(50000);
+        usleep(10000);
 
     }
 
@@ -98,8 +98,6 @@ void Navigation::determineSimple()
 
     if(nextMove == TYPE_STRAIGHT)
     {
-        
-
         if(!(sensorData & SENSOR_FRONT) && (sensorData & SENSOR_FRONTRIGHT))
             {
                 *data_.getNextMoveP() = MOV_ADJ_RIGHT;
@@ -108,18 +106,22 @@ void Navigation::determineSimple()
             {
                 *data_.getNextMoveP() = MOV_ADJ_LEFT;
             }
+        
+
+
+        if(linetype == TYPE_LEFT || linetype == TYPE_RIGHT || linetype == TYPE_TJUNCTION)
+        {
+           *data_.getNextMoveP() = MOV_STOP;
+        }
     }
     if (nextMove == TYPE_STOP) //Hvis vi er standset
     {
-       //Styr efter linjetype
+       if (linetype == TYPE_STRAIGHT)
+       {
+        *data_.getNextMoveP() = MOV_STRAIGHT;
+       }
+       
     }
-    // else if (nextMove == TYPE_RIGHT) //Hvis vi drejer til højre, skal vi vente til vi igen kan se en linje med front
-    // {
-    //     if (sensorData & FRONT)
-    //     {
-    //         *data_.getNextMoveP() = TYPE_STOP; //Når vi igen kan se linjen stopper vi
-    //     }
-    // }
 }
 
 void Navigation::rightTurn()
