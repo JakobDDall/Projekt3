@@ -41,7 +41,7 @@ void LinetypeDecider::determineLinetype()
     {
         *linetypePointer_ = TYPE_STRAIGHT;
     }
-    else if((sensorData & FRONT) && (sensorData & FRONTLEFT) && (sensorData & FRONTRIGHT)) 
+    else if((sensorData & BACK) && (sensorData & LEFT) && (sensorData & RIGHT)) 
     {
         *linetypePointer_ = TYPE_TJUNCTION;
     }

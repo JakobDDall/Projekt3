@@ -16,7 +16,7 @@ private:
     SPI* mySpi_ = NULL;
 
 public:
-    SpiDevice(int mode = 0, int speed = 1000000, int delay = 0, int wordlen = 8);
+    SpiDevice(int mode = 0, int speed = 100000, int delay = 0, int wordlen = 8);
     ~SpiDevice();
     uint8_t requestData(uint8_t request);
     void sendData(uint8_t cmd);
