@@ -96,13 +96,13 @@ void Navigation::determineSimple()
 
 
 
-    if(nextMove == TYPE_STRAIGHT)
+    if(nextMove == TYPE_STRAIGHT || nextMove == MOV_ADJ_RIGHT || nextMove == MOV_ADJ_LEFT)
     {
-        if(!(sensorData & SENSOR_FRONT) && (sensorData & SENSOR_FRONTRIGHT))
+        if((sensorData & SENSOR_FRONTRIGHT) && !(sensorData & SENSOR_FRONTLEFT))
             {
                 *data_.getNextMoveP() = MOV_ADJ_RIGHT;
             }
-        else if(!(sensorData & SENSOR_FRONT) && (sensorData & SENSOR_FRONTLEFT))
+        else if(!(sensorData & SENSOR_FRONTRIGHT) && (sensorData & SENSOR_FRONTLEFT))
             {
                 *data_.getNextMoveP() = MOV_ADJ_LEFT;
             }
