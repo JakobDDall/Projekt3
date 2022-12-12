@@ -4,6 +4,7 @@
 #include "HandlerAppIF.hpp"
 #include "TouchscreenCpp.hpp"
 #include <ctime>
+#include <chrono>
 
 class Navigation
 {
@@ -27,8 +28,11 @@ private:
     TouchscreenCpp* touchscreen_;
     bool turning_ = false;
     bool turnDone_ = false;
-    std::clock_t turning_timer_;
+    bool iamturning = false;
+    bool ihavejustturned = false;
+    std::chrono::system_clock::time_point turning_timer_;
     std::string* lastMove_;
+    
 };
 
 

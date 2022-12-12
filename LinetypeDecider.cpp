@@ -73,6 +73,10 @@ void LinetypeDecider::determineLinetype()
             *linetypePointer_ = TYPE_STRAIGHT; 
             break;
 
+        case 0b00111111: //ALLE
+            *linetypePointer_ = TYPE_STOP; 
+            break;
+
         default:
             *linetypePointer_ = TYPE_UNKNOWN;
             break;

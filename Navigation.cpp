@@ -99,44 +99,47 @@ void Navigation::determineSimple()
     std::string nextMove = *data_.getNextMoveP();
     uint8_t sensorData = std::stoi(*data_.getSensorDataP());
  
-
-
-
-
     if(nextMove == MOV_STRAIGHT && (*lastMove_ == MOV_LEFT || *lastMove_ == MOV_RIGHT))
     {
-        printf("I made it in here --------------------------------------------------------------------- \n");
-            if (turnDone_ == false)
-            {
-                turning_timer_ = clock();
-                turnDone_ = true;
-            }
-            if(turnDone_ && ((clock() - turning_timer_)/CLOCKS_PER_SEC) > 1)
-            {
-                turnDone_ = false;
-                *lastMove_ = MOV_STRAIGHT;
-            }
+        iamturning = true;
     }
     else if(nextMove == MOV_STRAIGHT || nextMove == MOV_ADJ_RIGHT || nextMove == MOV_ADJ_LEFT)
     {
-        if((sensorData & SENSOR_FRONTRIGHT) && !(sensorData & SENSOR_FRONTLEFT))
+        if(ihavejustturned)
+        {
+            printf("I made it in here --------------------------------------------------------------------- \n");
+            if (turnDone_ == false)
+            {
+                turning_timer_ = std::chrono::system_clock::now();
+                turnDone_ = true;
+            }
+            if(turnDone_ && (std::chrono::duration_cast<std::chrono::milliseconds>
+                (std::chrono::system_clock::now() - turning_timer_).count() > 1000))
+            {
+                turnDone_ = false;
+                ihavejustturned = false;
+            }
+        }
+        else if((sensorData & SENSOR_FRONTRIGHT) && !(sensorData & SENSOR_FRONTLEFT) && !(sensorData & SENSOR_FRONT))
             {
                 *data_.getNextMoveP() = MOV_ADJ_RIGHT;
             }
-        else if(!(sensorData & SENSOR_FRONTRIGHT) && (sensorData & SENSOR_FRONTLEFT))
+        else if(!(sensorData & SENSOR_FRONTRIGHT) && (sensorData & SENSOR_FRONTLEFT) && !(sensorData & SENSOR_FRONT))
             {
                 *data_.getNextMoveP() = MOV_ADJ_LEFT;
             }
-        
-
-
-        if(linetype == TYPE_RIGHT || linetype == TYPE_TJUNCTION)
+    
+        else if(linetype == TYPE_RIGHT || linetype == TYPE_TJUNCTION)
         {                        
             *data_.getNextMoveP() = MOV_RIGHT;
         }
         else if(linetype == TYPE_LEFT)
         {
             *data_.getNextMoveP() = MOV_LEFT;
+        }
+        else if(linetype == TYPE_STOP)
+        {
+            *data_.getNextMoveP() = MOV_STOP;
         }
     }
     else if (nextMove == MOV_STOP) //Hvis vi er standset
@@ -150,15 +153,18 @@ void Navigation::determineSimple()
     {
         if (turning_ == false)
             {
-                turning_timer_ = clock();
+                
+                turning_timer_ = std::chrono::system_clock::now();
                 turning_ = true;
             }
-            if(turning_ && ((clock() - turning_timer_)/CLOCKS_PER_SEC) > 0.15)
+            if(turning_ && (std::chrono::duration_cast<std::chrono::milliseconds>
+                (std::chrono::system_clock::now() - turning_timer_).count() > 500))
             {
                 if(sensorData & SENSOR_FRONT)
                 {
                     *data_.getNextMoveP() = MOV_STRAIGHT;
                     turning_ = false;
+                    ihavejustturned = true;
                 }
             }
     }
