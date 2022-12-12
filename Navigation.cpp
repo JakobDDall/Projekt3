@@ -43,6 +43,7 @@ void Navigation::startMainLoop()
         touchscreen_->updateScreen();
         handlerAppIF_->sendCmd();
         printAllData();
+        std::cout << 
         usleep(10000);
 
     }
@@ -91,6 +92,7 @@ void Navigation::printAllData()
     std::cout << "Mode: " << *data_.getModeP() << std::endl;
     std::cout << "Move: " << *data_.getNextMoveP() << std::endl;
     std::cout << "Sensordata: " << *data_.getSensorDataP() << std::endl;
+    std::cout << "Test halløj " << ihavejustturned << std::endl;
 }
 
 void Navigation::determineSimple()
@@ -99,11 +101,11 @@ void Navigation::determineSimple()
     std::string nextMove = *data_.getNextMoveP();
     uint8_t sensorData = std::stoi(*data_.getSensorDataP());
  
-    if(nextMove == MOV_STRAIGHT && (*lastMove_ == MOV_LEFT || *lastMove_ == MOV_RIGHT))
-    {
-        iamturning = true;
-    }
-    else if(nextMove == MOV_STRAIGHT || nextMove == MOV_ADJ_RIGHT || nextMove == MOV_ADJ_LEFT)
+    // if(nextMove == MOV_STRAIGHT && (*lastMove_ == MOV_LEFT || *lastMove_ == MOV_RIGHT))
+    // {
+    //     iamturning = true;
+    // }
+    if(nextMove == MOV_STRAIGHT || nextMove == MOV_ADJ_RIGHT || nextMove == MOV_ADJ_LEFT)
     {
         if(ihavejustturned)
         {
@@ -120,23 +122,28 @@ void Navigation::determineSimple()
                 ihavejustturned = false;
             }
         }
-        else if((sensorData & SENSOR_FRONTRIGHT) && !(sensorData & SENSOR_FRONTLEFT) && !(sensorData & SENSOR_FRONT))
-            {
-                *data_.getNextMoveP() = MOV_ADJ_RIGHT;
-            }
-        else if(!(sensorData & SENSOR_FRONTRIGHT) && (sensorData & SENSOR_FRONTLEFT) && !(sensorData & SENSOR_FRONT))
-            {
-                *data_.getNextMoveP() = MOV_ADJ_LEFT;
-            }
-    
-        else if(linetype == TYPE_RIGHT || linetype == TYPE_TJUNCTION)
+
+        else if(linetype == TYPE_RIGHT) //T-Junction passer ikke i simple|| linetype == TYPE_TJUNCTION)
         {                        
             *data_.getNextMoveP() = MOV_RIGHT;
         }
+
         else if(linetype == TYPE_LEFT)
         {
             *data_.getNextMoveP() = MOV_LEFT;
         }
+
+        else if((sensorData & SENSOR_FRONTRIGHT) && !(sensorData & SENSOR_FRONTLEFT) && !(sensorData & SENSOR_FRONT))
+        {
+            *data_.getNextMoveP() = MOV_ADJ_RIGHT;
+        }
+
+        else if(!(sensorData & SENSOR_FRONTRIGHT) && (sensorData & SENSOR_FRONTLEFT) && !(sensorData & SENSOR_FRONT))
+        {
+            *data_.getNextMoveP() = MOV_ADJ_LEFT;
+        }
+    
+
         else if(linetype == TYPE_STOP)
         {
             *data_.getNextMoveP() = MOV_STOP;
