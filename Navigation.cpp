@@ -44,7 +44,7 @@ void Navigation::startMainLoop()
         handlerAppIF_->sendCmd();
         printAllData();
         std::cout << 
-        usleep(10000);
+        usleep(50000);
 
     }
 

@@ -72,7 +72,7 @@ void LinetypeDecider::determineLinetype()
         case 0b00001001: //Bagerst og forrest
             *linetypePointer_ = TYPE_STRAIGHT; 
             break;
-        case 0b00110000: //vesntre forrest og vesntre bagerst (SKAL MÅSKE SLETTES)
+        case 0b00110000: //venstre forrest og vesntre bagerst (SKAL MÅSKE SLETTES)
             *linetypePointer_ = TYPE_STRAIGHT;
             break;
         case 0b00000110: //højre forrest og højre bagerst (SKAL MÅSKE SLETTES)

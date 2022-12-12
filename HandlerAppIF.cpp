@@ -1,6 +1,10 @@
 #include "HandlerAppIF.hpp"
 #include "defines.hpp"
 #include <unistd.h>
+#include <fstream>
+#include <iostream>
+#include <string>
+#include <list>
 
 HandlerAppIF::HandlerAppIF(Data& data)
 {
@@ -38,12 +42,20 @@ void HandlerAppIF::updateData()
 void HandlerAppIF::sendCmd()
 {
     uint8_t cmd;
+    std::fstream dataFile_;
 
     if (*lastMove_ == *nextMovePointer_) //Hvis der ikke er sket ændringer i ønsket move, er der ingen grund til at sende besked
     {
         printf("Move did not change from last loop \n");
         return;
     }
+       
+        dataFile_.open("Move.txt", std::fstream::out | std::fstream::app);
+        dataFile_ << "\n";
+        dataFile_ << *nextMovePointer_ << std::endl;
+        dataFile_.close();
+
+
     if (*modePointer_ == "Simple" || *modePointer_ == "Advanced")
     {
         if (*nextMovePointer_ == MOV_LEFT)

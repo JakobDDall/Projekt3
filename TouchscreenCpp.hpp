@@ -21,6 +21,4 @@ public:
 
     void readFromFile();
     void writeToFile();
-
-   
 };
