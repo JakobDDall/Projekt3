@@ -46,7 +46,15 @@ void LinetypeDecider::determineLinetype()
             *linetypePointer_ = TYPE_LEFT; 
             break;
 
+        case 0b00100000: //Bagerst venstre
+            *linetypePointer_ = TYPE_LEFT; 
+            break;
+
         case 0b00000011: //Bagerst midt og højre
+            *linetypePointer_ = TYPE_RIGHT; 
+            break;
+
+        case 0b00000010: //Bagerst højre
             *linetypePointer_ = TYPE_RIGHT; 
             break;
         
