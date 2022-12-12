@@ -142,7 +142,10 @@ void Navigation::determineSimple()
         {
             *data_.getNextMoveP() = MOV_ADJ_LEFT;
         }
-    
+        else if(linetype == TYPE_STRAIGHT)
+        {
+            *data_.getNextMoveP() = MOV_STRAIGHT;
+        }
 
         else if(linetype == TYPE_STOP)
         {
@@ -169,6 +172,7 @@ void Navigation::determineSimple()
             {
                 if(sensorData & SENSOR_FRONT)
                 {
+                    
                     *data_.getNextMoveP() = MOV_STRAIGHT;
                     turning_ = false;
                     ihavejustturned = true;
