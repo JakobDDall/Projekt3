@@ -61,6 +61,14 @@ void LinetypeDecider::determineLinetype()
         case 0b00001000: //Kun forreste
             *linetypePointer_ = TYPE_STRAIGHT; 
             break;
+
+        case 0b00101000: // Forreste og bagerst venstre
+            *linetypePointer_ = TYPE_STRAIGHT; 
+            break;
+
+        case 0b00001010: //Forrst og bagerst højre
+            *linetypePointer_ = TYPE_STRAIGHT; 
+            break;
         case 0b00001001: //Bagerst og forrest
             *linetypePointer_ = TYPE_STRAIGHT; 
             break;

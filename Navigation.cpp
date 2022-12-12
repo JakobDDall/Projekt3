@@ -1,7 +1,7 @@
 #include "Navigation.hpp"
 #include "defines.hpp"
 #include <unistd.h>
-#include <ctime>
+
 
 Navigation::Navigation(/* args */)
 {
@@ -15,6 +15,9 @@ Navigation::Navigation(/* args */)
         data_.setMode("55");
         data_.setNextMove("55");
         data_.setSensorData("55");
+
+
+        lastMove_ = new std::string;
 }
 
 Navigation::~Navigation()
@@ -22,6 +25,7 @@ Navigation::~Navigation()
     delete handlerAppIF_;
     delete lineDecider_;
     delete touchscreen_;
+    delete lastMove_;
 }
 
 
@@ -98,7 +102,22 @@ void Navigation::determineSimple()
 
 
 
-    if(nextMove == TYPE_STRAIGHT || nextMove == MOV_ADJ_RIGHT || nextMove == MOV_ADJ_LEFT)
+
+    if(nextMove == MOV_STRAIGHT && (*lastMove_ == MOV_LEFT || *lastMove_ == MOV_RIGHT))
+    {
+        printf("I made it in here --------------------------------------------------------------------- \n");
+            if (turnDone_ == false)
+            {
+                turning_timer_ = clock();
+                turnDone_ = true;
+            }
+            if(turnDone_ && ((clock() - turning_timer_)/CLOCKS_PER_SEC) > 1)
+            {
+                turnDone_ = false;
+                *lastMove_ = MOV_STRAIGHT;
+            }
+    }
+    else if(nextMove == MOV_STRAIGHT || nextMove == MOV_ADJ_RIGHT || nextMove == MOV_ADJ_LEFT)
     {
         if((sensorData & SENSOR_FRONTRIGHT) && !(sensorData & SENSOR_FRONTLEFT))
             {
@@ -120,29 +139,33 @@ void Navigation::determineSimple()
             *data_.getNextMoveP() = MOV_LEFT;
         }
     }
-    if (nextMove == MOV_STOP) //Hvis vi er standset
+    else if (nextMove == MOV_STOP) //Hvis vi er standset
     {
        if (linetype == TYPE_STRAIGHT)
        {
         *data_.getNextMoveP() = MOV_STRAIGHT;
        }
     }
-    if(nextMove == MOV_RIGHT || nextMove == MOV_LEFT)
+    else if(nextMove == MOV_RIGHT || nextMove == MOV_LEFT)
     {
         if (turning_ == false)
             {
                 turning_timer_ = clock();
                 turning_ = true;
             }
-            if(turning_ && ((clock() - turning_timer_)/CLOCKS_PER_SEC) > 0.5)
+            if(turning_ && ((clock() - turning_timer_)/CLOCKS_PER_SEC) > 0.15)
             {
                 if(sensorData & SENSOR_FRONT)
                 {
-                    *data_.getNextMoveP() = MOV_STOP;
+                    *data_.getNextMoveP() = MOV_STRAIGHT;
                     turning_ = false;
                 }
             }
     }
+
+
+
+    *lastMove_ = *data_.getNextMoveP(); //Opdater lastmove
 }
 
 void Navigation::rightTurn()
