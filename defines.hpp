@@ -16,6 +16,7 @@
 #define MOV_ADJ_LEFT "AdjLeft"
 #define MOV_ADJ_RIGHT "AdjRight"
 #define MOV_STOP "Stop"
+#define MOV_NOTHING "Nothing"
 
 //------------------ Sensors --------------
 #define SENSOR_LEFT 0b00100000

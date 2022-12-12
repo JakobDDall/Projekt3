@@ -24,6 +24,8 @@ private:
     HandlerAppIF* handlerAppIF_;
     LinetypeDecider* lineDecider_;
     TouchscreenCpp* touchscreen_;
+    bool turning_ = false;
+    std::clock_t turning_timer_;
 };
 
 

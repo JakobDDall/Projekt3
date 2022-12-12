@@ -1,6 +1,7 @@
 #include "Navigation.hpp"
 #include "defines.hpp"
 #include <unistd.h>
+#include <ctime>
 
 Navigation::Navigation(/* args */)
 {
@@ -93,6 +94,7 @@ void Navigation::determineSimple()
     std::string linetype = *data_.getLineTypeP();
     std::string nextMove = *data_.getNextMoveP();
     uint8_t sensorData = std::stoi(*data_.getSensorDataP());
+ 
 
 
 
@@ -109,18 +111,37 @@ void Navigation::determineSimple()
         
 
 
-        if(linetype == TYPE_LEFT || linetype == TYPE_RIGHT || linetype == TYPE_TJUNCTION)
+        if(linetype == TYPE_RIGHT || linetype == TYPE_TJUNCTION)
+        {                        
+            *data_.getNextMoveP() = MOV_RIGHT;
+        }
+        else if(linetype == TYPE_LEFT)
         {
-           *data_.getNextMoveP() = MOV_STOP;
+            *data_.getNextMoveP() = MOV_LEFT;
         }
     }
-    if (nextMove == TYPE_STOP) //Hvis vi er standset
+    if (nextMove == MOV_STOP) //Hvis vi er standset
     {
        if (linetype == TYPE_STRAIGHT)
        {
         *data_.getNextMoveP() = MOV_STRAIGHT;
        }
-       
+    }
+    if(nextMove == MOV_RIGHT || nextMove == MOV_LEFT)
+    {
+        if (turning_ == false)
+            {
+                turning_timer_ = clock();
+                turning_ = true;
+            }
+            if(turning_ && ((clock() - turning_timer_)/CLOCKS_PER_SEC) > 0.5)
+            {
+                if(sensorData & SENSOR_FRONT)
+                {
+                    *data_.getNextMoveP() = MOV_STOP;
+                    turning_ = false;
+                }
+            }
     }
 }
 
