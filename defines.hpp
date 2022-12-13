@@ -2,7 +2,9 @@
 #define TYPE_STRAIGHT "Straight"
 #define TYPE_RIGHT "Right"
 #define TYPE_LEFT "Left"
-#define TYPE_TJUNCTION "T-junction"
+#define TYPE_TJUNCTION1 "T-junction1"
+#define TYPE_TJUNCTION2 "T-junction2"
+#define TYPE_TJUNCTION3 "T-junction3"
 #define TYPE_UTURN "U-turn"
 #define TYPE_4WAY "4-way"
 #define TYPE_STOP "Stop"
@@ -25,9 +27,6 @@
 #define SENSOR_FRONTRIGHT 0b00000100
 #define SENSOR_RIGHT 0b00000010
 #define SENSOR_BACK 0b00000001
-
-
-
 
 //---------------- Commands -------------------------
 #define CMD_SENSORREQUEST 0x44

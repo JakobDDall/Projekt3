@@ -29,10 +29,10 @@ void HandlerAppIF::updateData()
     //Læs sensor
     //Send cmd
 
-    int tmp = std::stoi(*(distPointer_));
+    double tmp = std::stod(*(distPointer_));
     spiDevice_.requestData(distRequest_); //Bed om dist. Ignorer svar
     (spiDevice_.requestData(0x00)); //dummy
-    tmp += (spiDevice_.requestData(0x00) * cmPerClockCycle); //Modtag dist. 
+    tmp += (static_cast<int8_t>(spiDevice_.requestData(0x00)) * cmPerClockCycle); //Modtag dist. 
     (spiDevice_.requestData(sensorRequest_)); // Bed om sensor
     std::to_string(spiDevice_.requestData(0x00)); //dummy
     *sensorDataPointer_= std::to_string(spiDevice_.requestData(0x00)); //Modtag sensor

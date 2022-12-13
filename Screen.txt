@@ -1,4 +1,4 @@
 STOP
-0
-Unknown
+1103.706000
+Stop
 Stop

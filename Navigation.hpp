@@ -19,9 +19,7 @@ public:
 private:
     void printAllData();
     void determineSimple();
-    void rightTurn();
-    void leftTurn();
-    void uTurn();
+    void determineAdvanced();
     Data data_;
     HandlerAppIF* handlerAppIF_;
     LinetypeDecider* lineDecider_;

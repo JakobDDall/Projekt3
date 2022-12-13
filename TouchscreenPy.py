@@ -14,7 +14,6 @@ class TouchscreenPy:
         self.simplemode = True
         self.simpleButton.enabled = False
         self.advancedButton.enabled = False
-        self.valgtMode.value = "Simple funktion er valgt"
         print("Simple funktion er valgt")
         
         #Skriv til filen at simple er valgt:
@@ -26,7 +25,7 @@ class TouchscreenPy:
         self.advancedmode = True
         self.advancedButton.enabled = False
         self.simpleButton.enabled = False
-        self.valgtMode.value = "Avanceret funktion er valgt"
+        #self.valgtMode.value = "Avanceret funktion er valgt"
         
         #Skriv til filen at advanced er valgt:
         text = "Advanced\n"
@@ -83,6 +82,8 @@ class TouchscreenPy:
            
            distance = self.readData(1)
            self.distance.value = distance
+           
+           self.valgtMode.value = self.readData(0)
         
             
             
@@ -103,6 +104,7 @@ class TouchscreenPy:
 
 
         self.valgtMode = Text(self.app, text ="Ingen funktion er valgt", align="top", width = "fill", height = 2 )
+        
 
         Text(self.app, text="Aflagte distance:", align ="top")
         self.distance = Text(self.app, text= "0")
@@ -110,7 +112,7 @@ class TouchscreenPy:
         
         Text(self.app, text="Nuværende linjetype:", align ="top")
         self.linje = Text(self.app, text="Ingen linjetype")
-        self.linje.repeat(1000, self.main)  # Laver callback hvert 1000ms
+        self.linje.repeat(100, self.main)  # Laver callback hvert 100ms
         
         Text(self.app, text="Næste move:", align ="top")
         self.move = Text(self.app, text="Ingen")

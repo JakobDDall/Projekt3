@@ -7,7 +7,7 @@ TouchscreenCpp::TouchscreenCpp(std::string fileName, Data& data)
     fileName_ = fileName;
     //
     dataFile_.open(fileName_, std::fstream::out | std::fstream::trunc);
-    dataFile_ << "55\n55\n55\n55\n";
+    dataFile_ << "STOP\n0\n0\n0\n";
     dataFile_.close();
     
     //Læg passende data medlemmer ind i liste. Stemmer overens med rækkefølgen af den tilhørende txt fil

@@ -17,5 +17,6 @@ private:
     std::string* sensorDataPointer_;
     std::string* linetypePointer_;
     std::string* currentMovePointer_;
+    std::string* currentMode_;
     void determineLinetype();
 };

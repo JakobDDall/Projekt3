@@ -10,11 +10,11 @@ Navigation::Navigation(/* args */)
     touchscreen_ = new TouchscreenCpp("Screen.txt", data_);
 
         std::cout << "-------------------- Setting initialdata entries ----------" << std::endl;
-        data_.setDist("55");
-        data_.setLineType("55");
-        data_.setMode("55");
-        data_.setNextMove("55");
-        data_.setSensorData("55");
+        data_.setDist("0");
+        data_.setLineType("0");
+        data_.setMode("STOP");
+        data_.setNextMove("0");
+        data_.setSensorData("0");
 
 
         lastMove_ = new std::string;
@@ -33,19 +33,14 @@ void Navigation::startMainLoop()
 {
     while (1)
     {
-        //printAllData();
         touchscreen_->updateData(); //Skal ske først! læser brugerinput. Overskriver desuden data... :-)
-
-    // Hvis mode er stop, så send STOP!
         handlerAppIF_->updateData(); //Hent ny data fra PSoC
         lineDecider_->updateData(); //del 1 af: Behandl data fra PSoC
         determineNextMove();        //del 2 af: Behandl data fra PSoC
         touchscreen_->updateScreen();
         handlerAppIF_->sendCmd();
-        printAllData();
-        std::cout << 
-        usleep(50000);
-
+        printAllData(); 
+        usleep(10000);
     }
 
 
@@ -79,7 +74,7 @@ void Navigation::determineNextMove()
     }
     else if (*data_.getModeP() == "Advanced")
     {
-        //Kald determine advanced
+        determineAdvanced();
         return;
     }
 }
@@ -92,7 +87,6 @@ void Navigation::printAllData()
     std::cout << "Mode: " << *data_.getModeP() << std::endl;
     std::cout << "Move: " << *data_.getNextMoveP() << std::endl;
     std::cout << "Sensordata: " << *data_.getSensorDataP() << std::endl;
-    std::cout << "Test halløj " << ihavejustturned << std::endl;
 }
 
 void Navigation::determineSimple()
@@ -185,17 +179,92 @@ void Navigation::determineSimple()
     *lastMove_ = *data_.getNextMoveP(); //Opdater lastmove
 }
 
-void Navigation::rightTurn()
+void Navigation::determineAdvanced()
 {
+    std::string linetype = *data_.getLineTypeP();
+    std::string nextMove = *data_.getNextMoveP();
+    uint8_t sensorData = std::stoi(*data_.getSensorDataP());
+ 
+    // if(nextMove == MOV_STRAIGHT && (*lastMove_ == MOV_LEFT || *lastMove_ == MOV_RIGHT))
+    // {
+    //     iamturning = true;
+    // }
+    if(nextMove == MOV_STRAIGHT || nextMove == MOV_ADJ_RIGHT || nextMove == MOV_ADJ_LEFT)
+    {
+        if(ihavejustturned)
+        {
+            printf("I made it in here --------------------------------------------------------------------- \n");
+            if (turnDone_ == false)
+            {
+                turning_timer_ = std::chrono::system_clock::now();
+                turnDone_ = true;
+            }
+            if(turnDone_ && (std::chrono::duration_cast<std::chrono::milliseconds>
+                (std::chrono::system_clock::now() - turning_timer_).count() > 1000))
+            {
+                turnDone_ = false;
+                ihavejustturned = false;
+            }
+        }
 
-}
+        else if(linetype == TYPE_RIGHT || linetype == TYPE_TJUNCTION1 || linetype == TYPE_TJUNCTION2 || linetype == TYPE_4WAY || linetype == TYPE_UTURN)
+        {                        
+            *data_.getNextMoveP() = MOV_RIGHT;
+        }
 
-void Navigation::leftTurn()
-{
+        else if(linetype == TYPE_LEFT)
+        {
+            *data_.getNextMoveP() = MOV_LEFT;
+        }
 
-}
+        else if((sensorData & SENSOR_FRONTRIGHT) && !(sensorData & SENSOR_FRONTLEFT) && !(sensorData & SENSOR_FRONT))
+        {
+            *data_.getNextMoveP() = MOV_ADJ_RIGHT;
+        }
 
-void Navigation::uTurn()
-{
+        else if(!(sensorData & SENSOR_FRONTRIGHT) && (sensorData & SENSOR_FRONTLEFT) && !(sensorData & SENSOR_FRONT))
+        {
+            *data_.getNextMoveP() = MOV_ADJ_LEFT;
+        }
+        else if(linetype == TYPE_STRAIGHT)
+        {
+            *data_.getNextMoveP() = MOV_STRAIGHT;
+        }
 
+        else if(linetype == TYPE_STOP)
+        {
+            *data_.getNextMoveP() = MOV_STOP;
+        }
+    }
+    else if (nextMove == MOV_STOP) //Hvis vi er standset
+    {
+       if (linetype == TYPE_STRAIGHT)
+       {
+        *data_.getNextMoveP() = MOV_STRAIGHT;
+       }
+    }
+    else if(nextMove == MOV_RIGHT || nextMove == MOV_LEFT)
+    {
+        if (turning_ == false)
+            {
+                
+                turning_timer_ = std::chrono::system_clock::now();
+                turning_ = true;
+            }
+            if(turning_ && (std::chrono::duration_cast<std::chrono::milliseconds>
+                (std::chrono::system_clock::now() - turning_timer_).count() > 500))
+            {
+                if(sensorData & SENSOR_FRONT)
+                {
+                    
+                    *data_.getNextMoveP() = MOV_STRAIGHT;
+                    turning_ = false;
+                    ihavejustturned = true;
+                }
+            }
+    }
+
+
+
+    *lastMove_ = *data_.getNextMoveP(); //Opdater lastmove
 }
