@@ -93,6 +93,7 @@ void LinetypeDecider::determineLinetype()
                 *linetypePointer_ = TYPE_LEFT; 
                 break;
 
+
             case 0b00000011: //Bagerst midt og højre
                 *linetypePointer_ = TYPE_RIGHT; 
                 break;
@@ -105,13 +106,13 @@ void LinetypeDecider::determineLinetype()
                 *linetypePointer_ = TYPE_STRAIGHT; 
                 break;
 
-            case 0b00101000: // Forreste og bagerst venstre
-                *linetypePointer_ = TYPE_STRAIGHT; 
-                break;
+            //case 0b00101000: // Forreste og bagerst venstre
+            //    *linetypePointer_ = TYPE_STRAIGHT; 
+            //    break;
 
-            case 0b00001010: //Forrst og bagerst højre
-                *linetypePointer_ = TYPE_STRAIGHT; 
-                break;
+            //case 0b00001010: //Forrst og bagerst højre
+            //    *linetypePointer_ = TYPE_STRAIGHT; 
+            //    break;
             case 0b00001001: //Bagerst og forrest
                 *linetypePointer_ = TYPE_STRAIGHT; 
                 break;
@@ -123,20 +124,117 @@ void LinetypeDecider::determineLinetype()
             case 0b00001011:
                 *linetypePointer_ = TYPE_TJUNCTION1;
                 break;
+
+            case 0b00011011:
+                *linetypePointer_ = TYPE_TJUNCTION1;
+                break;
+
+            case 0b00001111:
+                *linetypePointer_ = TYPE_TJUNCTION1;
+                break;
+
+            case 0b00001010:
+                *linetypePointer_ = TYPE_TJUNCTION1;
+                break;
+
+            case 0b00011010:
+                *linetypePointer_ = TYPE_TJUNCTION1;
+                break;
+
+            case 0b00001110:
+                *linetypePointer_ = TYPE_TJUNCTION1;
+                break;
+            
+            case 0b00000110:
+                *linetypePointer_ = TYPE_TJUNCTION1;
+                break;
+
+            case 0b00000111:
+                *linetypePointer_ = TYPE_TJUNCTION1;
+                break;
             
             case 0b00100011: //Tre bagerste
                 *linetypePointer_ = TYPE_TJUNCTION2; 
+                break;
+
+            case 0b00100010:
+                *linetypePointer_ = TYPE_TJUNCTION2; 
+                break;
+
+            case 0b00101000:
+                *linetypePointer_ = TYPE_TJUNCTION3;
+                break;
+
+            case 0b00111000:
+                *linetypePointer_ = TYPE_TJUNCTION3;
+                break;
+
+            case 0b00101100:
+                *linetypePointer_ = TYPE_TJUNCTION3;
                 break;
             
             case 0b00101001:
                 *linetypePointer_ = TYPE_TJUNCTION3;
                 break;
 
-            case 0b00000001:
-                *linetypePointer_ = TYPE_UTURN;
+            case 0b00111001:
+                *linetypePointer_ = TYPE_TJUNCTION3;
                 break;
 
+            case 0b00101101:
+                *linetypePointer_ = TYPE_TJUNCTION3;
+                break;
+
+            case 0b00110001:
+                *linetypePointer_ = TYPE_TJUNCTION3;
+                break;
+            
+            case 0b00110000:
+                *linetypePointer_ = TYPE_TJUNCTION3;
+                break;
+            
+
+            //case 0b00000001:
+                //*linetypePointer_ = TYPE_UTURN;
+              //  break;
+
             case 0b00101010:
+                *linetypePointer_ = TYPE_4WAY;
+                break;
+
+            case 0b00111010:
+                *linetypePointer_ = TYPE_4WAY;
+                break;
+
+            case 0b00101110:
+                *linetypePointer_ = TYPE_4WAY;
+                break;
+
+            case 0b00101011:
+                *linetypePointer_ = TYPE_4WAY;
+                break;
+
+            case 0b00111011:
+                *linetypePointer_ = TYPE_4WAY;
+                break;
+
+            case 0b00101111:
+                *linetypePointer_ = TYPE_4WAY;
+                break;
+
+            case 0b00110011:
+                *linetypePointer_ = TYPE_4WAY;
+                break;
+
+            case 0b00110010:
+                *linetypePointer_ = TYPE_4WAY;
+                break;
+
+            case 0b00100111:
+                *linetypePointer_ = TYPE_4WAY;
+                break;
+
+            case 0b00100110:
                 *linetypePointer_ = TYPE_4WAY;
                 break;
 

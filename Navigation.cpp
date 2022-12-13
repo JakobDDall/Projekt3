@@ -212,6 +212,10 @@ void Navigation::determineAdvanced()
             *data_.getNextMoveP() = MOV_RIGHT;
         }
 
+        else if(linetype == TYPE_TJUNCTION3)
+        {
+            *data_.getNextMoveP() = MOV_STRAIGHT;
+        }
         else if(linetype == TYPE_LEFT)
         {
             *data_.getNextMoveP() = MOV_LEFT;
@@ -261,6 +265,11 @@ void Navigation::determineAdvanced()
                     turning_ = false;
                     ihavejustturned = true;
                 }
+            }
+            else if(nextMove == MOV_LEFT && sensorData & SENSOR_RIGHT)
+            {
+                *data_.getNextMoveP() = MOV_RIGHT;
+                turning_ = false;
             }
     }
 
