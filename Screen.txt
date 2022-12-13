@@ -1,4 +1,4 @@
-
-2995.002000
-Stop
+STOP
+790.938000
+Unknown
 Stop
