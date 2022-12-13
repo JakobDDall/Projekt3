@@ -25,5 +25,6 @@ private:
     const uint8_t distRequest_ = distRequest; //Denne skal sættes til en hardcoded værdi, som sendes fra RPi til PSoC ved spi request
     const uint8_t sensorRequest_ = sensorRequest;
     uint8_t spiDummy();
+    const float cmPerClockCycle = 0.054;
 };
 
