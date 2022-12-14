@@ -12,11 +12,8 @@ int main()
 {
     Navigation nav;
 
+    //Main loop foregår i Navigation klassen
     nav.startMainLoop();
     
-    
-
-
     return 0;
-
 }

@@ -3,8 +3,8 @@
 #include "LinetypeDecider.hpp"
 #include "HandlerAppIF.hpp"
 #include "TouchscreenCpp.hpp"
-#include <ctime>
 #include <chrono>
+#include <unistd.h>
 
 class Navigation
 {
@@ -17,7 +17,6 @@ public:
     
 
 private:
-    void printAllData();
     void determineSimple();
     void determineAdvanced();
     Data data_;
@@ -26,7 +25,6 @@ private:
     TouchscreenCpp* touchscreen_;
     bool turning_ = false;
     bool turnDone_ = false;
-    bool iamturning = false;
     bool ihavejustturned = false;
     std::chrono::system_clock::time_point turning_timer_;
     std::string* lastMove_;

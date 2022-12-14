@@ -26,9 +26,9 @@ void HandlerAppIF::updateData()
 {
 
     //Bed PSoC om at sende distance
-    //Læs distance og bed om sensor på samme tid
-    //Læs sensor
-    //Send cmd
+    //Læs distance
+    //Bed om sensordata
+    //Læs sensordata
     //Det man requester bliver først sendt næste SPI transfer igen, herved anvendes dummy requests.
     double tmp = std::stod(*(distPointer_));
     spiDevice_.requestData(distRequest_); //Bed om dist. Ignorer svar
@@ -47,17 +47,10 @@ void HandlerAppIF::sendCmd()
 
     if (*lastMove_ == *nextMovePointer_) //Hvis der ikke er sket ændringer i ønsket move, er der ingen grund til at sende besked
     {
-        printf("Move did not change from last loop \n");
         return;
     }
 
-        //Indsæt nextMove i tekstfil Move.txt
-        dataFile_.open("Move.txt", std::fstream::out | std::fstream::app);
-        dataFile_ << "\n";
-        dataFile_ << *nextMovePointer_ << std::endl;
-        dataFile_.close();
-
-
+    //Bestem hvilken kommando skal sendes til PSoC
     if (*modePointer_ == "Simple" || *modePointer_ == "Advanced")
     {
         if (*nextMovePointer_ == MOV_LEFT)
@@ -94,12 +87,4 @@ void HandlerAppIF::sendCmd()
     spiDevice_.requestData(cmd); //Send beskeden
     *lastMove_ = *nextMovePointer_; //Opdater lastmove
 }
-
-uint8_t HandlerAppIF::spiDummy()
-{
-    return 69;
-}
-
-
-
 

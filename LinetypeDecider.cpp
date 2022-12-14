@@ -32,8 +32,7 @@ void LinetypeDecider::determineLinetype()
     //6 er BACK
 
 
-    //Logikken her kigger på bits i sensordata, og giver et (temmelig dårligt) gæt på hvilken linje vi er på
-    //Kan forbedres meget
+    //Logikken her kigger på bits i sensordata, og bestemmer linjetypen
     uint8_t sensorData = std::stoi(*sensorDataPointer_);
     sensorData &= 0b00111111; //Clear first 2 bits, leave the rest
     
@@ -106,13 +105,6 @@ void LinetypeDecider::determineLinetype()
                 *linetypePointer_ = TYPE_STRAIGHT; 
                 break;
 
-            //case 0b00101000: // Forreste og bagerst venstre
-            //    *linetypePointer_ = TYPE_STRAIGHT; 
-            //    break;
-
-            //case 0b00001010: //Forrst og bagerst højre
-            //    *linetypePointer_ = TYPE_STRAIGHT; 
-            //    break;
             case 0b00001001: //Bagerst og forrest
                 *linetypePointer_ = TYPE_STRAIGHT; 
                 break;
@@ -121,120 +113,115 @@ void LinetypeDecider::determineLinetype()
                 *linetypePointer_ = TYPE_STOP; 
                 break;
 
-            case 0b00001011:
+            case 0b00001011: //forrest, højre og bagerst
                 *linetypePointer_ = TYPE_TJUNCTION1;
                 break;
 
-            case 0b00011011:
+            case 0b00011011: //venstre forrest, forrest, højre og bagerst
                 *linetypePointer_ = TYPE_TJUNCTION1;
                 break;
 
-            case 0b00001111:
+            case 0b00001111: //forrest, højre forrest, højre og bagerst
                 *linetypePointer_ = TYPE_TJUNCTION1;
                 break;
 
-            case 0b00001010:
+            case 0b00001010: //forrest og højre
                 *linetypePointer_ = TYPE_TJUNCTION1;
                 break;
 
-            case 0b00011010:
+            case 0b00011010: //venstre forrest, forrest og højre
                 *linetypePointer_ = TYPE_TJUNCTION1;
                 break;
 
-            case 0b00001110:
+            case 0b00001110: //forrest, højre forrest og højre
                 *linetypePointer_ = TYPE_TJUNCTION1;
                 break;
             
-            case 0b00000110:
+            case 0b00000110: //højre forrest og højre
                 *linetypePointer_ = TYPE_TJUNCTION1;
                 break;
 
-            case 0b00000111:
+            case 0b00000111: //højre forrest, højre og bagerst
                 *linetypePointer_ = TYPE_TJUNCTION1;
                 break;
             
-            case 0b00100011: //Tre bagerste
+            case 0b00100011: //venstre, højre og bagerst
                 *linetypePointer_ = TYPE_TJUNCTION2; 
                 break;
 
-            case 0b00100010:
+            case 0b00100010: //venstre og højre
                 *linetypePointer_ = TYPE_TJUNCTION2; 
                 break;
 
-            case 0b00101000:
+            case 0b00101000: //venstre og forrest
                 *linetypePointer_ = TYPE_TJUNCTION3;
                 break;
 
-            case 0b00111000:
+            case 0b00111000: //venstre, venstre forrest  og forrest
                 *linetypePointer_ = TYPE_TJUNCTION3;
                 break;
 
-            case 0b00101100:
-                *linetypePointer_ = TYPE_TJUNCTION3;
-                break;
-            
-            case 0b00101001:
-                *linetypePointer_ = TYPE_TJUNCTION3;
-                break;
-
-            case 0b00111001:
-                *linetypePointer_ = TYPE_TJUNCTION3;
-                break;
-
-            case 0b00101101:
-                *linetypePointer_ = TYPE_TJUNCTION3;
-                break;
-
-            case 0b00110001:
+            case 0b00101100: //venstre, forrest og højre forrest
                 *linetypePointer_ = TYPE_TJUNCTION3;
                 break;
             
-            case 0b00110000:
+            case 0b00101001: //venstre forrest og bagerst
+                *linetypePointer_ = TYPE_TJUNCTION3;
+                break;
+
+            case 0b00111001: //venstre, venstre forrest, forrest og bagerst
+                *linetypePointer_ = TYPE_TJUNCTION3;
+                break;
+
+            case 0b00101101: //venstre, forrest, højre forrest og bagerst
+                *linetypePointer_ = TYPE_TJUNCTION3;
+                break;
+
+            case 0b00110001: //venstre, venstre forrest og bagerst
                 *linetypePointer_ = TYPE_TJUNCTION3;
                 break;
             
+            case 0b00110000: //venstre og venstre forrest
+                *linetypePointer_ = TYPE_TJUNCTION3;
+                break;
 
-            //case 0b00000001:
-                //*linetypePointer_ = TYPE_UTURN;
-              //  break;
-
-            case 0b00101010:
+            case 0b00101010: //venstre, forrest og højre
                 *linetypePointer_ = TYPE_4WAY;
                 break;
 
-            case 0b00111010:
+            case 0b00111010: //venstre, venstre forrest, forrest og højre
                 *linetypePointer_ = TYPE_4WAY;
                 break;
 
-            case 0b00101110:
+            case 0b00101110: //venstre, forrest, højre forrest og højre
                 *linetypePointer_ = TYPE_4WAY;
                 break;
 
-            case 0b00101011:
+            case 0b00101011: //venstre, forrest, højre og bagerst
                 *linetypePointer_ = TYPE_4WAY;
                 break;
 
-            case 0b00111011:
+            case 0b00111011: //venstre, venstre forrest, forrest, højre og bagerst
                 *linetypePointer_ = TYPE_4WAY;
                 break;
 
-            case 0b00101111:
+            case 0b00101111: //venstre, forrest, højre forrest, højre og bagerst
                 *linetypePointer_ = TYPE_4WAY;
                 break;
 
-            case 0b00110011:
+            case 0b00110011: //venstre, venstre forrest, højre og bagerst
                 *linetypePointer_ = TYPE_4WAY;
                 break;
 
-            case 0b00110010:
+            case 0b00110010: //venstre, venstre forrest og højre
                 *linetypePointer_ = TYPE_4WAY;
                 break;
 
-            case 0b00100111:
+            case 0b00100111: //venstre, højre forrest og bagerst
                 *linetypePointer_ = TYPE_4WAY;
                 break;
 
-            case 0b00100110:
+            case 0b00100110: //venstre, højre forrest, og højre
                 *linetypePointer_ = TYPE_4WAY;
                 break;
 

@@ -1,7 +1,6 @@
 #pragma once
 #include "Data.hpp"
 #include <string>
-#include <iostream>
 
 class LinetypeDecider
 {

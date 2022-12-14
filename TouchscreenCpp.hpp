@@ -18,7 +18,4 @@ public:
    
     void updateData(); //Opdater data klassen. Læs fra filer og skriv indhold videre
     void updateScreen(); //Opdater hvad der vises på skærm. Læs fra data klasse, skriv til fil.
-
-    void readFromFile();
-    void writeToFile();
 };

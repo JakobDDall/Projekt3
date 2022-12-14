@@ -1,6 +1,6 @@
 #include "Navigation.hpp"
 #include "defines.hpp"
-#include <unistd.h>
+
 
 
 Navigation::Navigation(/* args */)
@@ -9,15 +9,15 @@ Navigation::Navigation(/* args */)
     lineDecider_ = new LinetypeDecider(data_);
     touchscreen_ = new TouchscreenCpp("Screen.txt", data_);
 
-        std::cout << "-------------------- Setting initialdata entries ----------" << std::endl;
-        data_.setDist("0");
-        data_.setLineType("0");
-        data_.setMode("STOP");
-        data_.setNextMove("0");
-        data_.setSensorData("0");
+    //Setting initialdata entries
+    data_.setDist("0");
+    data_.setLineType("0");
+    data_.setMode("STOP");
+    data_.setNextMove("0");
+    data_.setSensorData("0");
 
 
-        lastMove_ = new std::string;
+    lastMove_ = new std::string;
 }
 
 Navigation::~Navigation()
@@ -29,18 +29,17 @@ Navigation::~Navigation()
 }
 
 
-void Navigation::startMainLoop()
+void Navigation::startMainLoop() //Hele programmet foregår i denne metode
 {
     while (1)
     {
-        touchscreen_->updateData(); //Skal ske først! læser brugerinput. Overskriver desuden data... :-)
-        handlerAppIF_->updateData(); //Hent ny data fra PSoC
-        lineDecider_->updateData(); //del 1 af: Behandl data fra PSoC
-        determineNextMove();        //del 2 af: Behandl data fra PSoC
-        touchscreen_->updateScreen();
-        handlerAppIF_->sendCmd();
-        printAllData(); 
-        usleep(10000);
+        touchscreen_->updateData(); //Læser brugerinput. Opdaterer data i data-klassen
+        handlerAppIF_->updateData(); //Hent ny data fra PSoC. Opdaterer data i data-klassen
+        lineDecider_->updateData(); //Bestemmer linjetypen ud fra sensordata fra PSoC. Opdaterer data i data-klassen
+        determineNextMove();        //Bestemmer den næste kommando der skal sendes til PSoC'en ud fra linjetype og sidste kommando udført af PSoC. Opdaterer data i data-klassen
+        touchscreen_->updateScreen(); //Opdaterer touchskærmen med opdateret data fra data-klassen
+        handlerAppIF_->sendCmd(); //Sender kommando til PSoC
+        usleep(10000); //Venter i 10ms. Dette gøres for at PSoC'en kan nå at få ny data før der sendes SPI-requests
     }
 
 
@@ -51,7 +50,7 @@ void Navigation::startMainLoop()
     //Denne funktion ser på hvad linebot netop nu er i gang med, og bestemmer næste move herudfra.
     //Eksempelvis: Kører vi ligeud analyserer vi linjetype, er vi ved at dreje, ser vi blot på en enkelt sensor
 
-    //Efter ovenstående har kørt, skulle robotten meget gerne have skrevet et move ind i nextMove variablen i data klassen.
+    //Efter ovenstående har kørt, skriver robotten et move ind i nextMove variablen i data klassen.
 
 //Move sendes
     //HandlerAppIF holder i hvert gennemløb af main-loop øje med om der er sket ændringer i robottens næste move.
@@ -60,16 +59,14 @@ void Navigation::startMainLoop()
 
 void Navigation::determineNextMove()
 {
-    if (*data_.getModeP() == "STOP") //Hvis stop er valgt, er beslutningen nem
+    if (*data_.getModeP() == "STOP") //Hvis stop er valgt, sættes nextMove blot til stop
     {
         *data_.getNextMoveP() = TYPE_STOP;
-        printf("determine move i stop mode \n");
         return;
     }
     else if (*data_.getModeP() == "Simple")
     {
         determineSimple();
-        printf("determine move i simple mode \n");
         return;
     }
     else if (*data_.getModeP() == "Advanced")
@@ -79,41 +76,30 @@ void Navigation::determineNextMove()
     }
 }
 
-void Navigation::printAllData()
-{
-    std::cout << "-------------------- Printing all data entries ----------" << std::endl;
-    std::cout << "Dist: " << *data_.getDistP() << std::endl;
-    std::cout << "Line type: " << *data_.getLineTypeP() << std::endl;
-    std::cout << "Mode: " << *data_.getModeP() << std::endl;
-    std::cout << "Move: " << *data_.getNextMoveP() << std::endl;
-    std::cout << "Sensordata: " << *data_.getSensorDataP() << std::endl;
-}
-
 void Navigation::determineSimple()
 {
     std::string linetype = *data_.getLineTypeP();
     std::string nextMove = *data_.getNextMoveP();
     uint8_t sensorData = std::stoi(*data_.getSensorDataP());
  
-    if(nextMove == MOV_STRAIGHT || nextMove == MOV_ADJ_RIGHT || nextMove == MOV_ADJ_LEFT)
+    if(nextMove == MOV_STRAIGHT || nextMove == MOV_ADJ_RIGHT || nextMove == MOV_ADJ_LEFT) //Hvis linebotten kører ligeud
     {
-        if(ihavejustturned)
+        if(ihavejustturned) //Hvis lineBot lige har drejet, skal den køre ligeud i et sekund. Herved undgås at linebot begynder at dreje med det samme igen
         {
-            printf("I made it in here --------------------------------------------------------------------- \n");
             if (turnDone_ == false)
             {
-                turning_timer_ = std::chrono::system_clock::now();
+                turning_timer_ = std::chrono::system_clock::now(); //Start "timer"
                 turnDone_ = true;
             }
             if(turnDone_ && (std::chrono::duration_cast<std::chrono::milliseconds>
-                (std::chrono::system_clock::now() - turning_timer_).count() > 1000))
+                (std::chrono::system_clock::now() - turning_timer_).count() > 1000)) //Hvis der er gået 1s eller over siden "timer" blev startet
             {
                 turnDone_ = false;
                 ihavejustturned = false;
             }
         }
 
-        else if(linetype == TYPE_RIGHT) //T-Junction passer ikke i simple|| linetype == TYPE_TJUNCTION)
+        else if(linetype == TYPE_RIGHT)
         {                        
             *data_.getNextMoveP() = MOV_RIGHT;
         }
@@ -125,12 +111,12 @@ void Navigation::determineSimple()
 
         else if((sensorData & SENSOR_FRONTRIGHT) && !(sensorData & SENSOR_FRONTLEFT) && !(sensorData & SENSOR_FRONT))
         {
-            *data_.getNextMoveP() = MOV_ADJ_RIGHT;
+            *data_.getNextMoveP() = MOV_ADJ_RIGHT; //Anvendes til at justere linebottens kurs lidt mod højre
         }
 
         else if(!(sensorData & SENSOR_FRONTRIGHT) && (sensorData & SENSOR_FRONTLEFT) && !(sensorData & SENSOR_FRONT))
         {
-            *data_.getNextMoveP() = MOV_ADJ_LEFT;
+            *data_.getNextMoveP() = MOV_ADJ_LEFT; //Anvendes til at justere linebotens kurs lidt mod venstre
         }
         else if(linetype == TYPE_STRAIGHT)
         {
@@ -142,30 +128,30 @@ void Navigation::determineSimple()
             *data_.getNextMoveP() = MOV_STOP;
         }
     }
-    else if (nextMove == MOV_STOP) //Hvis vi er standset
+    else if (nextMove == MOV_STOP) //Hvis linebotten er standset
     {
-       if (linetype == TYPE_STRAIGHT)
+       if (linetype == TYPE_STRAIGHT) //Kør ligeud, når linebotten ser en linje
        {
         *data_.getNextMoveP() = MOV_STRAIGHT;
        }
     }
-    else if(nextMove == MOV_RIGHT || nextMove == MOV_LEFT)
+    else if(nextMove == MOV_RIGHT || nextMove == MOV_LEFT) //Hvis linebotten drejer
     {
         if (turning_ == false)
             {
                 
-                turning_timer_ = std::chrono::system_clock::now();
+                turning_timer_ = std::chrono::system_clock::now(); //Start "timer" ved påbegyndelse af sving
                 turning_ = true;
             }
             if(turning_ && (std::chrono::duration_cast<std::chrono::milliseconds>
-                (std::chrono::system_clock::now() - turning_timer_).count() > 500))
+                (std::chrono::system_clock::now() - turning_timer_).count() > 500)) //Hvis der er gået 500ms eller mere siden sving blev påbegyndt. Anvendes så frontsensoren ikke reagerer på dens nuværende linje
             {
-                if(sensorData & SENSOR_FRONT)
+                if(sensorData & SENSOR_FRONT) //Hvis frontsensor ser linje
                 {
                     
-                    *data_.getNextMoveP() = MOV_STRAIGHT;
+                    *data_.getNextMoveP() = MOV_STRAIGHT; //Kør ligeud
                     turning_ = false;
-                    ihavejustturned = true;
+                    ihavejustturned = true; //Variabel anvendt til at undgå at LineBot drejer med det samme igen
                 }
             }
     }
@@ -179,11 +165,10 @@ void Navigation::determineAdvanced()
     std::string nextMove = *data_.getNextMoveP();
     uint8_t sensorData = std::stoi(*data_.getSensorDataP());
  
-    if(nextMove == MOV_STRAIGHT || nextMove == MOV_ADJ_RIGHT || nextMove == MOV_ADJ_LEFT)
+    if(nextMove == MOV_STRAIGHT || nextMove == MOV_ADJ_RIGHT || nextMove == MOV_ADJ_LEFT) //Hvis linebotten kører ligeud
     {
-        if(ihavejustturned)
+        if(ihavejustturned) //Hvis lineBot lige har drejet, skal den køre ligeud i et sekund. Herved undgås at linebot begynder at dreje med det samme igen
         {
-            printf("I made it in here --------------------------------------------------------------------- \n");
             if (turnDone_ == false)
             {
                 turning_timer_ = std::chrono::system_clock::now();
@@ -197,15 +182,19 @@ void Navigation::determineAdvanced()
             }
         }
 
+        //Ved disse linjetyper skal der drejes til højre, da LineBot prioriterer højre
         else if(linetype == TYPE_RIGHT || linetype == TYPE_TJUNCTION1 || linetype == TYPE_TJUNCTION2 || linetype == TYPE_4WAY || linetype == TYPE_UTURN)
         {                        
             *data_.getNextMoveP() = MOV_RIGHT;
         }
 
+        //Derefter prioriterer linebot straight
         else if(linetype == TYPE_TJUNCTION3)
         {
             *data_.getNextMoveP() = MOV_STRAIGHT;
         }
+
+        //Sidste prioritering er left
         else if(linetype == TYPE_LEFT)
         {
             *data_.getNextMoveP() = MOV_LEFT;
@@ -213,12 +202,12 @@ void Navigation::determineAdvanced()
 
         else if((sensorData & SENSOR_FRONTRIGHT) && !(sensorData & SENSOR_FRONTLEFT) && !(sensorData & SENSOR_FRONT))
         {
-            *data_.getNextMoveP() = MOV_ADJ_RIGHT;
+            *data_.getNextMoveP() = MOV_ADJ_RIGHT; //Anvendes til at justere linebottens kurs lidt mod højre
         }
 
         else if(!(sensorData & SENSOR_FRONTRIGHT) && (sensorData & SENSOR_FRONTLEFT) && !(sensorData & SENSOR_FRONT))
         {
-            *data_.getNextMoveP() = MOV_ADJ_LEFT;
+            *data_.getNextMoveP() = MOV_ADJ_LEFT; //Anvendes til at justere linebottens kurs lidt mod venstre
         }
         else if(linetype == TYPE_STRAIGHT)
         {
@@ -230,35 +219,35 @@ void Navigation::determineAdvanced()
             *data_.getNextMoveP() = MOV_STOP;
         }
     }
-    else if (nextMove == MOV_STOP) //Hvis vi er standset
+    else if (nextMove == MOV_STOP) //Hvis LineBot er standset
     {
-       if (linetype == TYPE_STRAIGHT)
+       if (linetype == TYPE_STRAIGHT) //Hvis LineBot ser en lige linje
        {
         *data_.getNextMoveP() = MOV_STRAIGHT;
        }
     }
-    else if(nextMove == MOV_RIGHT || nextMove == MOV_LEFT)
+    else if(nextMove == MOV_RIGHT || nextMove == MOV_LEFT) //Hvis linebotten drejer
     {
         if (turning_ == false)
             {
                 
-                turning_timer_ = std::chrono::system_clock::now();
+                turning_timer_ = std::chrono::system_clock::now(); //Start "timer" ved påbegyndelse af sving
                 turning_ = true;
             }
             if(turning_ && (std::chrono::duration_cast<std::chrono::milliseconds>
-                (std::chrono::system_clock::now() - turning_timer_).count() > 500))
+                (std::chrono::system_clock::now() - turning_timer_).count() > 500)) //Hvis der er gået 500ms eller mere siden sving blev påbegyndt. Anvendes så frontsensoren ikke reagerer på dens nuværende linje
             {
-                if(sensorData & SENSOR_FRONT)
+                if(sensorData & SENSOR_FRONT) //Hvis frontsensor ser linje
                 {
                     
-                    *data_.getNextMoveP() = MOV_STRAIGHT;
+                    *data_.getNextMoveP() = MOV_STRAIGHT; //Kør ligeud
                     turning_ = false;
-                    ihavejustturned = true;
+                    ihavejustturned = true; //Variabel anvendt til at undgå at LineBot drejer med det samme igen
                 }
             }
-            else if(nextMove == MOV_LEFT && sensorData & SENSOR_RIGHT)
+            else if(nextMove == MOV_LEFT && sensorData & SENSOR_RIGHT) //Hvis linebot har påbegyndt et venstre sving, men ser noget på højre sensor
             {
-                *data_.getNextMoveP() = MOV_RIGHT;
+                *data_.getNextMoveP() = MOV_RIGHT; //Drej til højre i stedet (højreprioritering)
                 turning_ = false;
             }
     }

@@ -5,7 +5,8 @@ TouchscreenCpp::TouchscreenCpp(std::string fileName, Data& data)
 {
     //Gem filnavn i variabel
     fileName_ = fileName;
-    //
+
+    //Sætter default værdier
     dataFile_.open(fileName_, std::fstream::out | std::fstream::trunc);
     dataFile_ << "STOP\n0\n0\n0\n";
     dataFile_.close();
@@ -19,10 +20,9 @@ TouchscreenCpp::TouchscreenCpp(std::string fileName, Data& data)
 
 TouchscreenCpp::~TouchscreenCpp()
 {
-    //std::remove(fileName_.c_str());
 }
 
-void TouchscreenCpp::updateData()
+void TouchscreenCpp::updateData() //Læser brugerinput på touchskærm og gemmer i data-klassen
 {
     dataFile_.open(fileName_, std::fstream::in); //Åbn fil
     dataFile_.seekg (0, std::ios::beg); //Ryk filepointer til start
@@ -34,7 +34,7 @@ void TouchscreenCpp::updateData()
 }
 
 
-void TouchscreenCpp::updateScreen()
+void TouchscreenCpp::updateScreen() //Opdaterer touchskærmen med data fra data-klassen
 {
     dataFile_.open(fileName_, std::fstream::out | std::fstream::trunc); //Åbn og clear fil
     dataFile_.seekg (0, std::ios::beg); //Ryk filepointer til start
