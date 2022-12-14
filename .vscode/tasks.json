@@ -7,7 +7,14 @@
             "command": "g++",
             "args": [
                 "-g",
-                "${workspaceFolder}\\*.cpp",
+                "$PWD/Projekt3/LORT/combiningTest/Projekt3/main.cpp",
+                "$PWD/HandlerAppIF.cpp",
+                "${workspaceFolder}/SpiDevice.cpp",
+                "-lspidev-lib++",
+                "${workspaceFolder}/Navigation.cpp",
+                "${workspaceFolder}/LinetypeDecider.cpp",
+                "${workspaceFolder}/Data.cpp",
+                "${workspaceFolder}/TouchscreenCpp.cpp",
                 "-o",
                 "test.exe"
             ],

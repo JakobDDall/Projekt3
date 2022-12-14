@@ -1,0 +1,4 @@
+STOP
+57.888000
+Straight
+Stop
