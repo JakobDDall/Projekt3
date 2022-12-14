@@ -8,6 +8,7 @@
 
 HandlerAppIF::HandlerAppIF(Data& data)
 {
+    //Get datavariables as pointers
     distPointer_ = data.getDistP();
     sensorDataPointer_ = data.getSensorDataP();
     nextMovePointer_ = data.getNextMoveP();
@@ -28,11 +29,11 @@ void HandlerAppIF::updateData()
     //Læs distance og bed om sensor på samme tid
     //Læs sensor
     //Send cmd
-
+    //Det man requester bliver først sendt næste SPI transfer igen, herved anvendes dummy requests.
     double tmp = std::stod(*(distPointer_));
     spiDevice_.requestData(distRequest_); //Bed om dist. Ignorer svar
     (spiDevice_.requestData(0x00)); //dummy
-    tmp += (static_cast<int8_t>(spiDevice_.requestData(0x00)) * cmPerClockCycle); //Modtag dist. 
+    tmp += (static_cast<int8_t>(spiDevice_.requestData(0x00)) * cmPerClockCycle); //Modtag dist.
     (spiDevice_.requestData(sensorRequest_)); // Bed om sensor
     std::to_string(spiDevice_.requestData(0x00)); //dummy
     *sensorDataPointer_= std::to_string(spiDevice_.requestData(0x00)); //Modtag sensor
@@ -49,7 +50,8 @@ void HandlerAppIF::sendCmd()
         printf("Move did not change from last loop \n");
         return;
     }
-       
+
+        //Indsæt nextMove i tekstfil Move.txt
         dataFile_.open("Move.txt", std::fstream::out | std::fstream::app);
         dataFile_ << "\n";
         dataFile_ << *nextMovePointer_ << std::endl;

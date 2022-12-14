@@ -5,8 +5,7 @@
 // LineBot v 1.0
 // Data-class
 
-// Indeholder al systemets data, og get/set funktioner hertil. Fungerer som bindeled mellem forskellige klasser.
-
+// Contains data for the whole system. Get/set functions has been made to use/set the data. This classe acts as a link between different classes.
 
 class Data
 {
@@ -25,20 +24,12 @@ public:
 
     void addSensorData(std::string data);
 
-    //Kan gøres:
-    //Implementer sensordata som gennemsnit af sidste x elementer.
-    //Indsæt modtaget data i circular list
-    //Beregn gennemsnit af listens medlemmer
-    //Afrund til nærmeste heltal
-    //Indsæt som værdien i sensorData_
 private:
     std::string mode_;
     std::string dist_;
     std::string sensorData_;
     std::string lineType_;
     std::string nextMove_;
-    const int N_OF_SENSORS = 8;
-
 };
 
 

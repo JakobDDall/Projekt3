@@ -22,9 +22,11 @@ private:
     std::string* nextMovePointer_;
     std::string* modePointer_;
     std::string* lastMove_;
-    const uint8_t distRequest_ = distRequest; //Denne skal sættes til en hardcoded værdi, som sendes fra RPi til PSoC ved spi request
+    const uint8_t distRequest_ = distRequest;
     const uint8_t sensorRequest_ = sensorRequest;
     uint8_t spiDummy();
-    const float cmPerClockCycle = 0.054;
+    const float cmPerClockCycle = 0.054; //Dette er antallet af cm som LineBot kører pr. clock fra encoders. 
+                                         //Der er 380 clock signaler pr hele hjul rotation. Linebottens diameter er 6,634cm.
+                                         //Herved er omkredsen 20,84cm. Divideres dette med 380, får vi 0,054cm pr clock cycle.
 };
 
