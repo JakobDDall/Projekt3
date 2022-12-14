@@ -95,10 +95,6 @@ void Navigation::determineSimple()
     std::string nextMove = *data_.getNextMoveP();
     uint8_t sensorData = std::stoi(*data_.getSensorDataP());
  
-    // if(nextMove == MOV_STRAIGHT && (*lastMove_ == MOV_LEFT || *lastMove_ == MOV_RIGHT))
-    // {
-    //     iamturning = true;
-    // }
     if(nextMove == MOV_STRAIGHT || nextMove == MOV_ADJ_RIGHT || nextMove == MOV_ADJ_LEFT)
     {
         if(ihavejustturned)
@@ -174,8 +170,6 @@ void Navigation::determineSimple()
             }
     }
 
-
-
     *lastMove_ = *data_.getNextMoveP(); //Opdater lastmove
 }
 
@@ -185,10 +179,6 @@ void Navigation::determineAdvanced()
     std::string nextMove = *data_.getNextMoveP();
     uint8_t sensorData = std::stoi(*data_.getSensorDataP());
  
-    // if(nextMove == MOV_STRAIGHT && (*lastMove_ == MOV_LEFT || *lastMove_ == MOV_RIGHT))
-    // {
-    //     iamturning = true;
-    // }
     if(nextMove == MOV_STRAIGHT || nextMove == MOV_ADJ_RIGHT || nextMove == MOV_ADJ_LEFT)
     {
         if(ihavejustturned)

@@ -1,4 +1,4 @@
 STOP
-790.938000
-Unknown
+57.888000
+Straight
 Stop
