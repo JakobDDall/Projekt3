@@ -3,9 +3,6 @@
 #include "SpiDevice.hpp"
 #include <string>
 
-#define distRequest 0x55
-#define sensorRequest 0x44
-
 class HandlerAppIF
 {
 public:

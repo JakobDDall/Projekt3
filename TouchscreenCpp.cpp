@@ -28,8 +28,8 @@ void TouchscreenCpp::updateData() //Læser brugerinput på touchskærm og gemmer
     dataFile_.seekg (0, std::ios::beg); //Ryk filepointer til start
     std::string temp; //temp variabel til at gemme streng
 
-        std::getline(dataFile_, temp); //Gem linjens tekst i temp strengen
-        *dataRefs_.front() = temp; //Skriv linjen til data klassens tilsvarende element
+    std::getline(dataFile_, temp); //Gem linjens tekst i temp strengen
+    *dataRefs_.front() = temp; //Skriv linjen til data klassens tilsvarende element
     dataFile_.close();
 }
 

@@ -31,7 +31,6 @@ void LinetypeDecider::determineLinetype()
     //5 er RIGHT
     //6 er BACK
 
-
     //Logikken her kigger på bits i sensordata, og bestemmer linjetypen
     uint8_t sensorData = std::stoi(*sensorDataPointer_);
     sensorData &= 0b00111111; //Clear first 2 bits, leave the rest
@@ -228,27 +227,6 @@ void LinetypeDecider::determineLinetype()
             default:
                 *linetypePointer_ = TYPE_UNKNOWN;
                 break;
-        }
-
-
-
-
-
-
-
-
-
-
-
-
-        
-
-    }
-
-
-
-
-
-   
-   
+        }   
+    } 
 }
